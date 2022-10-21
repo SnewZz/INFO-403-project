@@ -1,30 +1,25 @@
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
+import java.io.PrintStream;
+import java.io.Reader;
 
 class Main{
     public static void main(String[] args) {
-        if(args.length == 0){
-            throw new IllegalArgumentException("At least one argument needed!");
-        }
-        try {
-            File f = new File(args[0]);
-            FileReader fr = new FileReader(f);
-            BufferedReader br = new BufferedReader(fr);
-            StringBuffer sb = new StringBuffer();
-            String line;
-            while((line = br.readLine()) != null){
-                sb.append(line);
-                sb.append("\n");
+        try{
+            if(args.length == 0){
+                throw new IllegalArgumentException("At least one argument needed!");
             }
-            fr.close();    
-            System.out.println("Contenu du fichier: ");
-            System.out.println(sb.toString());
-        } catch(IOException e){
+            Reader fileInputStream = new FileReader( args[0] );
+            //System.setErr( new PrintStream( new FileOutputStream( new File(args[0], "program.err" ) ) ) );
+            //System.setOut( new PrintStream( new FileOutputStream(new File( args[0], "program.out" ) ) ) );
+            Lexer lexer = new Lexer(fileInputStream);
+            lexer.yylex();
+        }catch(Exception e){
+            System.err.println( "Exception in Main " + e.toString() );
             e.printStackTrace();
-            System.exit(-1);
-        } 
+        }
     }
 
 }

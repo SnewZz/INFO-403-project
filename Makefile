@@ -4,4 +4,4 @@ all:
 	jar cfe dist/part1.jar Main -C bin .
 
 testing:
-		java -jar dist/part1.jar test/Factorial.fs
+	java -jar dist/part1.jar test/Factorial.fs

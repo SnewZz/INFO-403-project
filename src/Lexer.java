@@ -670,7 +670,7 @@ class Lexer {
 
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
-          { 	return new Symbol(LexicalUnit.END_OF_STREAM, yyline, yycolumn);
+          { 	return new Symbol(LexicalUnit.EOS, yyline, yycolumn);
  }
       }
       else {
