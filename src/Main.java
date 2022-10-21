@@ -12,8 +12,6 @@ class Main{
                 throw new IllegalArgumentException("At least one argument needed!");
             }
             Reader fileInputStream = new FileReader( args[0] );
-            //System.setErr( new PrintStream( new FileOutputStream( new File(args[0], "program.err" ) ) ) );
-            //System.setOut( new PrintStream( new FileOutputStream(new File( args[0], "program.out" ) ) ) );
             Lexer lexer = new Lexer(fileInputStream);
             lexer.yylex();
         }catch(Exception e){
