@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 %%// Options of the scanner
 
 %class Lexer	//Name
@@ -7,10 +10,30 @@
 %type Symbol  	//Says that the return type is Symbol
 %standalone		//Standalone mode
 
+%{
+	private ArrayList<Symbol> variables = new ArrayList<>();
+%}
+
+
 // Return value of the program
 %eofval{
 	return new Symbol(LexicalUnit.EOS, yyline, yycolumn);
 %eofval}
+
+%eof{
+	System.out.println("Variables");
+
+	Collections.sort(variables, new Comparator<Symbol>() {
+        @Override
+        public int compare(Symbol s1, Symbol s2) {
+            return s1.getValue().toString().compareTo(s2.getValue().toString());
+        }
+    });
+
+	for(Symbol s : variables){
+		System.out.println(s.getValue()+" "+s.getLine());
+	}
+%eof}
 
 // extended regex
 
@@ -30,7 +53,7 @@ ShortComment = ::[^\r\n]*{LineTerminator}//?
 TraditionalComment = "%%" [^*] ~"%%"
 Comment = {ShortComment}|{TraditionalComment} /* Nested comment :  https://stackoverflow.com/questions/24666688/jflex-match-nested-comments-as-one-token  */
 
-%%
+%% //Identification of tokens
 
 
 "BEGIN"     {System.out.println(new Symbol(LexicalUnit.BEGIN, yyline, yycolumn, yytext()));}
@@ -57,7 +80,13 @@ Comment = {ShortComment}|{TraditionalComment} /* Nested comment :  https://stack
 
 "WHILE"                 {System.out.println(new Symbol(LexicalUnit.WHILE, yyline, yycolumn, yytext()));}
 "DO"                    {System.out.println(new Symbol(LexicalUnit.DO, yyline, yycolumn, yytext()));}
-{VarName}               {System.out.println(new Symbol(LexicalUnit.VARNAME, yyline, yycolumn, yytext()));}
+{VarName}               {
+							Symbol var = new Symbol(LexicalUnit.VARNAME, yyline, yycolumn, yytext());
+							System.out.println(var);
+							if(!variables.stream().anyMatch(s -> s.getValue().toString().equals(var.getValue().toString()))){
+								variables.add(var);
+							}
+						}
 {Number}                {System.out.println(new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()));}
 {Comment}               {yytext();}
 {ProgName}              {System.out.println(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));}
