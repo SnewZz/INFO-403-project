@@ -49,9 +49,10 @@ Number = ([1-9]{Numeric}*)|0
 
 LineTerminator = \r|\n|\r\n
 
-ShortComment = ::[^\r\n]*{LineTerminator}//?
+ShortComment = ::[^\r\n]*{LineTerminator}?
+
 TraditionalComment = "%%" [^*] ~"%%"
-Comment = {ShortComment}|{TraditionalComment} /* Nested comment :  https://stackoverflow.com/questions/24666688/jflex-match-nested-comments-as-one-token  */
+Comment = {ShortComment}|{TraditionalComment}
 
 %% //Identification of tokens
 
