@@ -21,7 +21,7 @@ import java.util.Comparator;
 %eofval}
 
 %eof{
-	System.out.println("Variables");
+	System.out.println("\nVariables");
 
 	Collections.sort(variables, new Comparator<Symbol>() {
         @Override
@@ -91,3 +91,4 @@ Comment = {ShortComment}|{TraditionalComment} /* Nested comment :  https://stack
 {Comment}               {yytext();}
 {ProgName}              {System.out.println(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));}
 .                       {}
+\n 						{}
