@@ -44,7 +44,7 @@ Numeric        = [0-9]
 AlphaNumeric   = {Alpha}|{Numeric}
 
 VarName = {AlphaLowerCase}({AlphaLowerCase}|{Numeric})*
-ProgName = {AlphaUpperCase}{AlphaNumeric}*
+ProgName = {AlphaUpperCase}{AlphaNumeric}*{AlphaLowerCase}+{AlphaNumeric}*
 Number = ([1-9]{Numeric}*)|0
 
 LineTerminator = \r|\n|\r\n
@@ -91,4 +91,4 @@ Comment = {ShortComment}|{TraditionalComment} /* Nested comment :  https://stack
 {Comment}               {yytext();}
 {ProgName}              {System.out.println(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));}
 .                       {}
-\n 						{}
+{LineTerminator}		{}

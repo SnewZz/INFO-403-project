@@ -569,7 +569,7 @@ class Lexer {
     if (!zzEOFDone) {
       zzEOFDone = true;
     
-	System.out.println("Variables");
+	System.out.println("\nVariables");
 
 	Collections.sort(variables, new Comparator<Symbol>() {
         @Override
