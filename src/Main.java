@@ -1,10 +1,8 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.PrintStream;
 import java.io.Reader;
 
+/** This class contains the main method. 
+ * This checks if there is one argument and read the file before passing it to the lexer. */
 class Main{
     public static void main(String[] args) {
         try{

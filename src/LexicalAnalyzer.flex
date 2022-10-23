@@ -51,7 +51,7 @@ LineTerminator = \r|\n|\r\n
 
 ShortComment = ::[^\r\n]*{LineTerminator}?
 
-TraditionalComment = "%%" [^*] ~"%%"
+TraditionalComment = "%%"~"%%"
 Comment = {ShortComment}|{TraditionalComment}
 
 %% //Identification of tokens
