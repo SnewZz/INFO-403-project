@@ -3,7 +3,7 @@ import java.io.Reader;
 
 /** This class contains the main method. 
  * This checks if there is one argument and read the file before passing it to the lexer. */
-class Main{
+public class Main{
     public static void main(String[] args) {
         try{
             if(args.length == 0){

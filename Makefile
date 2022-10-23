@@ -5,3 +5,6 @@ all:
 
 testing:
 	java -jar dist/part1.jar test/Factorial.fs
+	java -jar dist/part1.jar test/AllRegex.fs
+	java -jar dist/part1.jar test/Comments.fs
+	java -jar dist/part1.jar test/SortVariable.fs

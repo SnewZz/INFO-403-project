@@ -579,7 +579,9 @@ class Lexer {
     if (!zzEOFDone) {
       zzEOFDone = true;
     
-    wait(10);
+    for(int i = 0; i<10000; i++){
+        
+    }
     if(stackStateComment != 0){
         throw new Error("The long comment has not been closed!");
     }
