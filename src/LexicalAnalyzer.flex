@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.lang.Error;
 %%// Options of the scanner
 
 %class Lexer	//Name
@@ -9,8 +10,10 @@ import java.util.Comparator;
 %column       	//Use character counter by line (yycolumn variable)
 %type Symbol  	//Says that the return type is Symbol
 %standalone		//Standalone mode
+%scanerror Error
 
 %{
+    private int stackStateComment = 0;
 	private ArrayList<Symbol> variables = new ArrayList<>();
 %}
 
@@ -21,6 +24,13 @@ import java.util.Comparator;
 %eofval}
 
 %eof{
+    for(int i = 0; i<10000; i++){
+        
+    }
+    if(stackStateComment != 0){
+        throw new Error("The long comment has not been closed!");
+    }
+
 	System.out.println("\nVariables");
 
 	Collections.sort(variables, new Comparator<Symbol>() {
@@ -54,42 +64,57 @@ ShortComment = ::[^\r\n]*{LineTerminator}?
 TraditionalComment = "%%"~"%%"
 Comment = {ShortComment}|{TraditionalComment}
 
+%xstate COMMENT
+
 %% //Identification of tokens
 
+<YYINITIAL>{
+    "%%"                    {
+                                stackStateComment++;
+                                yybegin(COMMENT);
+                            }
+    "BEGIN"                 {System.out.println(new Symbol(LexicalUnit.BEGIN, yyline, yycolumn, yytext()));}
+    "END"                   {System.out.println(new Symbol(LexicalUnit.END, yyline, yycolumn, yytext()));}
 
-"BEGIN"     {System.out.println(new Symbol(LexicalUnit.BEGIN, yyline, yycolumn, yytext()));}
-"END"       {System.out.println(new Symbol(LexicalUnit.END, yyline, yycolumn, yytext()));}
+    ","                     {System.out.println(new Symbol(LexicalUnit.COMMA, yyline, yycolumn, yytext()));}
+    ":="                    {System.out.println(new Symbol(LexicalUnit.ASSIGN, yyline, yycolumn, yytext()));}
+    "("                     {System.out.println(new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, yytext()));}
+    ")"                     {System.out.println(new Symbol(LexicalUnit.RPAREN, yyline, yycolumn, yytext()));}
+    "-"                     {System.out.println(new Symbol(LexicalUnit.MINUS, yyline, yycolumn, yytext()));}
+    "+"                     {System.out.println(new Symbol(LexicalUnit.PLUS, yyline, yycolumn, yytext()));}
+    "*"                     {System.out.println(new Symbol(LexicalUnit.TIMES, yyline, yycolumn, yytext()));}
+    "/"                     {System.out.println(new Symbol(LexicalUnit.DIVIDE, yyline, yycolumn, yytext()));}
 
-","                     {System.out.println(new Symbol(LexicalUnit.COMMA, yyline, yycolumn, yytext()));}
-":="                    {System.out.println(new Symbol(LexicalUnit.ASSIGN, yyline, yycolumn, yytext()));}
-"("                     {System.out.println(new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, yytext()));}
-")"                     {System.out.println(new Symbol(LexicalUnit.RPAREN, yyline, yycolumn, yytext()));}
-"-"                     {System.out.println(new Symbol(LexicalUnit.MINUS, yyline, yycolumn, yytext()));}
-"+"                     {System.out.println(new Symbol(LexicalUnit.PLUS, yyline, yycolumn, yytext()));}
-"*"                     {System.out.println(new Symbol(LexicalUnit.TIMES, yyline, yycolumn, yytext()));}
-"/"                     {System.out.println(new Symbol(LexicalUnit.DIVIDE, yyline, yycolumn, yytext()));}
+    "IF"                    {System.out.println(new Symbol(LexicalUnit.IF, yyline, yycolumn, yytext()));}
+    "THEN"                  {System.out.println(new Symbol(LexicalUnit.THEN, yyline, yycolumn, yytext()));}
+    "ELSE"                  {System.out.println(new Symbol(LexicalUnit.ELSE, yyline, yycolumn, yytext()));}
+    "PRINT"                 {System.out.println(new Symbol(LexicalUnit.PRINT, yyline, yycolumn, yytext()));}
+    "READ"                  {System.out.println(new Symbol(LexicalUnit.READ, yyline, yycolumn, yytext()));}
 
-"IF"                    {System.out.println(new Symbol(LexicalUnit.IF, yyline, yycolumn, yytext()));}
-"THEN"                  {System.out.println(new Symbol(LexicalUnit.THEN, yyline, yycolumn, yytext()));}
-"ELSE"                  {System.out.println(new Symbol(LexicalUnit.ELSE, yyline, yycolumn, yytext()));}
-"PRINT"                 {System.out.println(new Symbol(LexicalUnit.PRINT, yyline, yycolumn, yytext()));}
-"READ"                  {System.out.println(new Symbol(LexicalUnit.READ, yyline, yycolumn, yytext()));}
+    "="                     {System.out.println(new Symbol(LexicalUnit.EQUAL, yyline, yycolumn, yytext()));}
+    ">"                     {System.out.println(new Symbol(LexicalUnit.GREATER, yyline, yycolumn, yytext()));}
+    "<"                     {System.out.println(new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, yytext()));}
 
-"="                     {System.out.println(new Symbol(LexicalUnit.EQUAL, yyline, yycolumn, yytext()));}
-">"                     {System.out.println(new Symbol(LexicalUnit.GREATER, yyline, yycolumn, yytext()));}
-"<"                     {System.out.println(new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, yytext()));}
+    "WHILE"                 {System.out.println(new Symbol(LexicalUnit.WHILE, yyline, yycolumn, yytext()));}
+    "DO"                    {System.out.println(new Symbol(LexicalUnit.DO, yyline, yycolumn, yytext()));}
+    {VarName}               {
+    							Symbol var = new Symbol(LexicalUnit.VARNAME, yyline, yycolumn, yytext());
+    							System.out.println(var);
+    							if(!variables.stream().anyMatch(s -> s.getValue().toString().equals(var.getValue().toString()))){
+    								variables.add(var);
+    							}
+    						}
+    {Number}                {System.out.println(new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()));}
+    {Comment}               {yytext();}
+    {ProgName}              {System.out.println(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));}
+    .                       {}
+    {LineTerminator}		{}
+}
 
-"WHILE"                 {System.out.println(new Symbol(LexicalUnit.WHILE, yyline, yycolumn, yytext()));}
-"DO"                    {System.out.println(new Symbol(LexicalUnit.DO, yyline, yycolumn, yytext()));}
-{VarName}               {
-							Symbol var = new Symbol(LexicalUnit.VARNAME, yyline, yycolumn, yytext());
-							System.out.println(var);
-							if(!variables.stream().anyMatch(s -> s.getValue().toString().equals(var.getValue().toString()))){
-								variables.add(var);
-							}
-						}
-{Number}                {System.out.println(new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()));}
-{Comment}               {yytext();}
-{ProgName}              {System.out.println(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));}
-.                       {}
-{LineTerminator}		{}
+<COMMENT>{
+    "%%"                    {
+                                stackStateComment--;
+                                yybegin(YYINITIAL);
+                            }
+    .                       {}
+}

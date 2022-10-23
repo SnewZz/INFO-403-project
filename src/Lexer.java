@@ -5,6 +5,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.lang.Error;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
@@ -18,6 +19,7 @@ class Lexer {
 
   // Lexical states.
   public static final int YYINITIAL = 0;
+  public static final int COMMENT = 2;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -26,7 +28,7 @@ class Lexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = {
-     0, 0
+     0,  0,  1, 1
   };
 
   /**
@@ -96,14 +98,15 @@ class Lexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\2\1\1\3\1\4\1\5\1\6"+
+    "\2\0\1\1\1\2\2\1\1\3\1\4\1\5\1\6"+
     "\1\7\1\10\1\11\2\12\1\1\1\13\1\14\1\15"+
-    "\11\1\1\16\2\0\1\17\1\0\1\20\1\0\1\21"+
-    "\2\0\1\22\5\0\2\23\2\0\1\24\6\0\1\25"+
-    "\1\0\1\26\1\27\1\0\1\23\1\30\1\31\1\32";
+    "\11\1\1\16\1\1\1\17\1\20\1\21\1\0\1\22"+
+    "\1\0\1\23\2\0\1\24\4\0\1\25\2\0\2\20"+
+    "\2\0\1\26\4\0\1\20\1\0\1\27\1\0\1\30"+
+    "\1\31\1\0\1\32\1\33\1\34";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[63];
+    int [] result = new int[66];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -128,17 +131,18 @@ class Lexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\44\0\44\0\110\0\154\0\44\0\44\0\44"+
-    "\0\44\0\44\0\44\0\44\0\44\0\220\0\264\0\44"+
-    "\0\44\0\44\0\330\0\374\0\u0120\0\u0144\0\u0168\0\u018c"+
-    "\0\u01b0\0\u01d4\0\u01f8\0\u021c\0\u0240\0\u0264\0\44\0\330"+
-    "\0\u0288\0\u02ac\0\330\0\u02d0\0\u02f4\0\330\0\u0318\0\u033c"+
-    "\0\u0360\0\u0384\0\u03a8\0\44\0\u03cc\0\u03f0\0\u0414\0\330"+
-    "\0\u0438\0\u045c\0\u0480\0\u04a4\0\u04c8\0\u04ec\0\330\0\u0510"+
-    "\0\330\0\330\0\u0534\0\u0558\0\330\0\330\0\330";
+    "\0\0\0\44\0\110\0\110\0\154\0\220\0\110\0\110"+
+    "\0\110\0\110\0\110\0\110\0\110\0\110\0\264\0\330"+
+    "\0\110\0\110\0\110\0\374\0\u0120\0\u0144\0\u0168\0\u018c"+
+    "\0\u01b0\0\u01d4\0\u01f8\0\u021c\0\u0240\0\u0264\0\u0288\0\u02ac"+
+    "\0\110\0\374\0\u02d0\0\u02f4\0\374\0\u0318\0\u033c\0\374"+
+    "\0\u0360\0\u0384\0\u03a8\0\u03cc\0\110\0\u0288\0\u03f0\0\110"+
+    "\0\u0414\0\u0438\0\u045c\0\374\0\u0480\0\u04a4\0\u04c8\0\u04ec"+
+    "\0\u0510\0\u0534\0\374\0\u0558\0\374\0\374\0\u057c\0\374"+
+    "\0\374\0\374";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[63];
+    int [] result = new int[66];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -161,40 +165,40 @@ class Lexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\2\2\1\3\1\4\1\5\1\6\1\7\1\10\1\11"+
-    "\1\12\1\13\1\14\1\15\1\16\1\17\1\20\1\21"+
-    "\1\22\1\23\1\24\1\23\1\25\1\26\3\23\1\27"+
-    "\3\23\1\30\1\31\1\23\1\32\1\33\1\34\45\0"+
-    "\1\2\46\0\1\35\53\0\2\16\44\0\1\36\1\0"+
-    "\1\37\37\0\2\40\4\0\21\40\1\41\14\0\2\40"+
-    "\4\0\4\40\1\42\14\40\1\41\14\0\2\40\4\0"+
-    "\13\40\1\43\5\40\1\41\14\0\2\40\4\0\11\40"+
-    "\1\44\1\45\6\40\1\41\14\0\2\40\4\0\5\40"+
-    "\1\46\13\40\1\41\14\0\2\40\4\0\15\40\1\47"+
-    "\3\40\1\41\14\0\2\40\4\0\4\40\1\50\14\40"+
-    "\1\41\14\0\2\40\4\0\7\40\1\51\11\40\1\41"+
-    "\14\0\2\40\4\0\7\40\1\52\11\40\1\41\14\0"+
-    "\2\34\25\0\1\34\7\53\1\0\34\53\1\36\1\54"+
-    "\1\36\1\55\40\36\14\0\2\41\4\0\22\41\14\0"+
-    "\2\40\4\0\6\40\1\56\12\40\1\41\14\0\2\40"+
-    "\4\0\16\40\1\57\2\40\1\41\14\0\2\40\4\0"+
-    "\3\40\1\60\15\40\1\41\14\0\2\40\4\0\10\40"+
-    "\1\61\10\40\1\41\14\0\2\40\4\0\1\62\20\40"+
-    "\1\41\14\0\2\40\4\0\4\40\1\63\14\40\1\41"+
-    "\14\0\2\40\4\0\10\40\1\64\10\40\1\41\4\53"+
-    "\1\65\37\53\1\0\1\54\56\0\2\40\4\0\10\40"+
-    "\1\66\10\40\1\41\14\0\2\40\4\0\4\40\1\67"+
-    "\14\40\1\41\14\0\2\40\4\0\12\40\1\70\6\40"+
-    "\1\41\14\0\2\40\4\0\3\40\1\71\15\40\1\41"+
-    "\14\0\2\40\4\0\12\40\1\72\6\40\1\41\14\0"+
-    "\2\40\4\0\11\40\1\73\7\40\1\41\4\53\1\74"+
-    "\37\53\14\0\2\40\4\0\12\40\1\75\6\40\1\41"+
-    "\14\0\2\40\4\0\17\40\1\76\1\40\1\41\14\0"+
-    "\2\40\4\0\4\40\1\77\14\40\1\41\4\0\1\54"+
-    "\37\0";
+    "\2\3\1\4\1\5\1\6\1\7\1\10\1\11\1\12"+
+    "\1\13\1\14\1\15\1\16\1\17\1\20\1\21\1\22"+
+    "\1\23\1\24\1\25\1\24\1\26\1\27\3\24\1\30"+
+    "\3\24\1\31\1\32\1\24\1\33\1\34\1\35\1\3"+
+    "\3\4\1\36\37\3\45\0\1\3\46\0\1\37\53\0"+
+    "\2\17\44\0\1\40\1\0\1\41\37\0\2\42\4\0"+
+    "\21\42\1\43\14\0\2\42\4\0\4\42\1\44\14\42"+
+    "\1\43\14\0\2\42\4\0\13\42\1\45\5\42\1\43"+
+    "\14\0\2\42\4\0\11\42\1\46\1\47\6\42\1\43"+
+    "\14\0\2\42\4\0\5\42\1\50\13\42\1\43\14\0"+
+    "\2\42\4\0\15\42\1\51\3\42\1\43\14\0\2\42"+
+    "\4\0\4\42\1\52\14\42\1\43\14\0\2\42\4\0"+
+    "\7\42\1\53\11\42\1\43\14\0\2\42\4\0\7\42"+
+    "\1\54\11\42\1\43\14\0\2\35\25\0\1\35\4\0"+
+    "\1\55\37\0\4\56\1\57\37\56\1\40\1\60\1\40"+
+    "\1\61\40\40\14\0\2\43\4\0\22\43\14\0\2\42"+
+    "\4\0\6\42\1\62\12\42\1\43\14\0\2\42\4\0"+
+    "\16\42\1\63\2\42\1\43\14\0\2\42\4\0\3\42"+
+    "\1\64\15\42\1\43\14\0\2\42\4\0\10\42\1\65"+
+    "\10\42\1\43\14\0\2\42\4\0\1\66\20\42\1\43"+
+    "\14\0\2\42\4\0\4\42\1\67\14\42\1\43\14\0"+
+    "\2\42\4\0\10\42\1\70\10\42\1\43\4\56\1\71"+
+    "\37\56\1\0\1\60\56\0\2\42\4\0\10\42\1\72"+
+    "\10\42\1\43\14\0\2\42\4\0\4\42\1\73\14\42"+
+    "\1\43\14\0\2\42\4\0\12\42\1\74\6\42\1\43"+
+    "\14\0\2\42\4\0\3\42\1\75\15\42\1\43\14\0"+
+    "\2\42\4\0\12\42\1\76\6\42\1\43\14\0\2\42"+
+    "\4\0\11\42\1\77\7\42\1\43\4\0\1\60\53\0"+
+    "\2\42\4\0\12\42\1\100\6\42\1\43\14\0\2\42"+
+    "\4\0\17\42\1\101\1\42\1\43\14\0\2\42\4\0"+
+    "\4\42\1\102\14\42\1\43";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[1404];
+    int [] result = new int[1440];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -237,13 +241,13 @@ class Lexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\2\11\2\1\10\11\2\1\3\11\12\1\2\0"+
-    "\1\11\1\0\1\1\1\0\1\1\2\0\1\1\5\0"+
-    "\1\11\1\1\2\0\1\1\6\0\1\1\1\0\2\1"+
-    "\1\0\4\1";
+    "\2\0\2\11\2\1\10\11\2\1\3\11\15\1\1\11"+
+    "\1\0\1\1\1\0\1\1\2\0\1\1\4\0\1\11"+
+    "\2\0\1\11\1\1\2\0\1\1\4\0\1\1\1\0"+
+    "\1\1\1\0\2\1\1\0\3\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[63];
+    int [] result = new int[66];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -320,6 +324,7 @@ class Lexer {
   private boolean zzEOFDone;
 
   /* user code: */
+    private int stackStateComment = 0;
 	private ArrayList<Symbol> variables = new ArrayList<>();
 
 
@@ -538,7 +543,7 @@ class Lexer {
    *
    * @param errorCode the code of the error message to display.
    */
-  private static void zzScanError(int errorCode) {
+  private static void zzScanError(int errorCode) throws Error {
     String message;
     try {
       message = ZZ_ERROR_MSG[errorCode];
@@ -558,7 +563,7 @@ class Lexer {
    * @param number the number of characters to be read again. This number must not be greater than
    *     {@link #yylength()}.
    */
-  public void yypushback(int number)  {
+  public void yypushback(int number)  throws Error {
     if ( number > yylength() )
       zzScanError(ZZ_PUSHBACK_2BIG);
 
@@ -574,6 +579,13 @@ class Lexer {
     if (!zzEOFDone) {
       zzEOFDone = true;
     
+    for(int i = 0; i<10000; i++){
+        
+    }
+    if(stackStateComment != 0){
+        throw new Error("The long comment has not been closed!");
+    }
+
 	System.out.println("\nVariables");
 
 	Collections.sort(variables, new Comparator<Symbol>() {
@@ -599,7 +611,7 @@ class Lexer {
    * @return the next token.
    * @exception java.io.IOException if any I/O-Error occurs.
    */
-  public Symbol yylex() throws java.io.IOException {
+  public Symbol yylex() throws java.io.IOException, Error {
     int zzInput;
     int zzAction;
 
@@ -745,136 +757,148 @@ class Lexer {
             { 
             }
             // fall through
-          case 27: break;
+          case 29: break;
           case 2:
             { System.out.print(yytext());
             }
             // fall through
-          case 28: break;
+          case 30: break;
           case 3:
             { System.out.println(new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 29: break;
+          case 31: break;
           case 4:
             { System.out.println(new Symbol(LexicalUnit.RPAREN, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 30: break;
+          case 32: break;
           case 5:
             { System.out.println(new Symbol(LexicalUnit.TIMES, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 31: break;
+          case 33: break;
           case 6:
             { System.out.println(new Symbol(LexicalUnit.PLUS, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 32: break;
+          case 34: break;
           case 7:
             { System.out.println(new Symbol(LexicalUnit.COMMA, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 33: break;
+          case 35: break;
           case 8:
             { System.out.println(new Symbol(LexicalUnit.MINUS, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 34: break;
+          case 36: break;
           case 9:
             { System.out.println(new Symbol(LexicalUnit.DIVIDE, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 35: break;
+          case 37: break;
           case 10:
             { System.out.println(new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 36: break;
+          case 38: break;
           case 11:
             { System.out.println(new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 37: break;
+          case 39: break;
           case 12:
             { System.out.println(new Symbol(LexicalUnit.EQUAL, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 38: break;
+          case 40: break;
           case 13:
             { System.out.println(new Symbol(LexicalUnit.GREATER, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 39: break;
+          case 41: break;
           case 14:
             { Symbol var = new Symbol(LexicalUnit.VARNAME, yyline, yycolumn, yytext());
-							System.out.println(var);
-							if(!variables.stream().anyMatch(s -> s.getValue().toString().equals(var.getValue().toString()))){
-								variables.add(var);
-							}
-            }
-            // fall through
-          case 40: break;
-          case 15:
-            { System.out.println(new Symbol(LexicalUnit.ASSIGN, yyline, yycolumn, yytext()));
-            }
-            // fall through
-          case 41: break;
-          case 16:
-            { System.out.println(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));
+    							System.out.println(var);
+    							if(!variables.stream().anyMatch(s -> s.getValue().toString().equals(var.getValue().toString()))){
+    								variables.add(var);
+    							}
             }
             // fall through
           case 42: break;
-          case 17:
-            { System.out.println(new Symbol(LexicalUnit.DO, yyline, yycolumn, yytext()));
+          case 15:
+            { stackStateComment++;
+                                yybegin(COMMENT);
             }
             // fall through
           case 43: break;
-          case 18:
-            { System.out.println(new Symbol(LexicalUnit.IF, yyline, yycolumn, yytext()));
-            }
-            // fall through
-          case 44: break;
-          case 19:
+          case 16:
             { yytext();
             }
             // fall through
+          case 44: break;
+          case 17:
+            { System.out.println(new Symbol(LexicalUnit.ASSIGN, yyline, yycolumn, yytext()));
+            }
+            // fall through
           case 45: break;
-          case 20:
-            { System.out.println(new Symbol(LexicalUnit.END, yyline, yycolumn, yytext()));
+          case 18:
+            { System.out.println(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));
             }
             // fall through
           case 46: break;
-          case 21:
-            { System.out.println(new Symbol(LexicalUnit.ELSE, yyline, yycolumn, yytext()));
+          case 19:
+            { System.out.println(new Symbol(LexicalUnit.DO, yyline, yycolumn, yytext()));
             }
             // fall through
           case 47: break;
-          case 22:
-            { System.out.println(new Symbol(LexicalUnit.READ, yyline, yycolumn, yytext()));
+          case 20:
+            { System.out.println(new Symbol(LexicalUnit.IF, yyline, yycolumn, yytext()));
             }
             // fall through
           case 48: break;
-          case 23:
-            { System.out.println(new Symbol(LexicalUnit.THEN, yyline, yycolumn, yytext()));
+          case 21:
+            { stackStateComment--;
+                                yybegin(YYINITIAL);
             }
             // fall through
           case 49: break;
-          case 24:
-            { System.out.println(new Symbol(LexicalUnit.BEGIN, yyline, yycolumn, yytext()));
+          case 22:
+            { System.out.println(new Symbol(LexicalUnit.END, yyline, yycolumn, yytext()));
             }
             // fall through
           case 50: break;
-          case 25:
-            { System.out.println(new Symbol(LexicalUnit.PRINT, yyline, yycolumn, yytext()));
+          case 23:
+            { System.out.println(new Symbol(LexicalUnit.ELSE, yyline, yycolumn, yytext()));
             }
             // fall through
           case 51: break;
-          case 26:
-            { System.out.println(new Symbol(LexicalUnit.WHILE, yyline, yycolumn, yytext()));
+          case 24:
+            { System.out.println(new Symbol(LexicalUnit.READ, yyline, yycolumn, yytext()));
             }
             // fall through
           case 52: break;
+          case 25:
+            { System.out.println(new Symbol(LexicalUnit.THEN, yyline, yycolumn, yytext()));
+            }
+            // fall through
+          case 53: break;
+          case 26:
+            { System.out.println(new Symbol(LexicalUnit.BEGIN, yyline, yycolumn, yytext()));
+            }
+            // fall through
+          case 54: break;
+          case 27:
+            { System.out.println(new Symbol(LexicalUnit.PRINT, yyline, yycolumn, yytext()));
+            }
+            // fall through
+          case 55: break;
+          case 28:
+            { System.out.println(new Symbol(LexicalUnit.WHILE, yyline, yycolumn, yytext()));
+            }
+            // fall through
+          case 56: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
