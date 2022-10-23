@@ -25,7 +25,7 @@ import java.lang.Error;
 
 %eof{
     for(int i = 0; i<10000; i++){
-        
+
     }
     if(stackStateComment != 0){
         throw new Error("The long comment has not been closed!");
@@ -62,7 +62,7 @@ LineTerminator = \r|\n|\r\n
 ShortComment = ::[^\r\n]*{LineTerminator}?
 
 TraditionalComment = "%%"~"%%"
-Comment = {ShortComment}|{TraditionalComment}
+//Comment = {ShortComment}|{TraditionalComment}
 
 %xstate COMMENT
 
@@ -105,7 +105,7 @@ Comment = {ShortComment}|{TraditionalComment}
     							}
     						}
     {Number}                {System.out.println(new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()));}
-    {Comment}               {yytext();}
+    {ShortComment}               {yytext();}
     {ProgName}              {System.out.println(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));}
     .                       {}
     {LineTerminator}		{}
@@ -117,4 +117,5 @@ Comment = {ShortComment}|{TraditionalComment}
                                 yybegin(YYINITIAL);
                             }
     .                       {}
+    {LineTerminator}		{}
 }
