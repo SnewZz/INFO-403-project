@@ -324,6 +324,15 @@ class Lexer {
   /* user code: */
     private int stackStateComment = 0;
 	private ArrayList<Symbol> variables = new ArrayList<>();
+    public ArrayList<Symbol> tokens = new ArrayList<>();
+
+    public ArrayList<Symbol> getVariables(){
+        return variables;
+    }
+
+    public ArrayList<Symbol> getTokens(){
+        return tokens;
+    }
 
 
   /**
@@ -584,7 +593,7 @@ class Lexer {
         throw new Error("The long comment has not been closed!");
     }
 
-	System.out.println("\nVariables");
+	//System.out.println("\nVariables");
 
 	Collections.sort(variables, new Comparator<Symbol>() {
         @Override
@@ -594,7 +603,7 @@ class Lexer {
     });
 
 	for(Symbol s : variables){
-		System.out.println(s.getValue()+" "+s.getLine());
+		//System.out.println(s.getValue()+" "+s.getLine());
 	}
     }
   }
@@ -762,66 +771,66 @@ class Lexer {
             // fall through
           case 30: break;
           case 3:
-            { System.out.println(new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, yytext()));
             }
             // fall through
           case 31: break;
           case 4:
-            { System.out.println(new Symbol(LexicalUnit.RPAREN, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.RPAREN, yyline, yycolumn, yytext()));
             }
             // fall through
           case 32: break;
           case 5:
-            { System.out.println(new Symbol(LexicalUnit.TIMES, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.TIMES, yyline, yycolumn, yytext()));
             }
             // fall through
           case 33: break;
           case 6:
-            { System.out.println(new Symbol(LexicalUnit.PLUS, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.PLUS, yyline, yycolumn, yytext()));
             }
             // fall through
           case 34: break;
           case 7:
-            { System.out.println(new Symbol(LexicalUnit.COMMA, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.COMMA, yyline, yycolumn, yytext()));
             }
             // fall through
           case 35: break;
           case 8:
-            { System.out.println(new Symbol(LexicalUnit.MINUS, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.MINUS, yyline, yycolumn, yytext()));
             }
             // fall through
           case 36: break;
           case 9:
-            { System.out.println(new Symbol(LexicalUnit.DIVIDE, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.DIVIDE, yyline, yycolumn, yytext()));
             }
             // fall through
           case 37: break;
           case 10:
-            { System.out.println(new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()));
             }
             // fall through
           case 38: break;
           case 11:
-            { System.out.println(new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, yytext()));
             }
             // fall through
           case 39: break;
           case 12:
-            { System.out.println(new Symbol(LexicalUnit.EQUAL, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.EQUAL, yyline, yycolumn, yytext()));
             }
             // fall through
           case 40: break;
           case 13:
-            { System.out.println(new Symbol(LexicalUnit.GREATER, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.GREATER, yyline, yycolumn, yytext()));
             }
             // fall through
           case 41: break;
           case 14:
             { Symbol var = new Symbol(LexicalUnit.VARNAME, yyline, yycolumn, yytext());
-    							System.out.println(var);
     							if(!variables.stream().anyMatch(s -> s.getValue().toString().equals(var.getValue().toString()))){
     								variables.add(var);
     							}
+                                this.tokens.add(var);
             }
             // fall through
           case 42: break;
@@ -837,22 +846,22 @@ class Lexer {
             // fall through
           case 44: break;
           case 17:
-            { System.out.println(new Symbol(LexicalUnit.ASSIGN, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.ASSIGN, yyline, yycolumn, yytext()));
             }
             // fall through
           case 45: break;
           case 18:
-            { System.out.println(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));
             }
             // fall through
           case 46: break;
           case 19:
-            { System.out.println(new Symbol(LexicalUnit.DO, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.DO, yyline, yycolumn, yytext()));
             }
             // fall through
           case 47: break;
           case 20:
-            { System.out.println(new Symbol(LexicalUnit.IF, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.IF, yyline, yycolumn, yytext()));
             }
             // fall through
           case 48: break;
@@ -863,37 +872,37 @@ class Lexer {
             // fall through
           case 49: break;
           case 22:
-            { System.out.println(new Symbol(LexicalUnit.END, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.END, yyline, yycolumn, yytext()));
             }
             // fall through
           case 50: break;
           case 23:
-            { System.out.println(new Symbol(LexicalUnit.ELSE, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.ELSE, yyline, yycolumn, yytext()));
             }
             // fall through
           case 51: break;
           case 24:
-            { System.out.println(new Symbol(LexicalUnit.READ, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.READ, yyline, yycolumn, yytext()));
             }
             // fall through
           case 52: break;
           case 25:
-            { System.out.println(new Symbol(LexicalUnit.THEN, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.THEN, yyline, yycolumn, yytext()));
             }
             // fall through
           case 53: break;
           case 26:
-            { System.out.println(new Symbol(LexicalUnit.BEGIN, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.BEGIN, yyline, yycolumn, yytext()));
             }
             // fall through
           case 54: break;
           case 27:
-            { System.out.println(new Symbol(LexicalUnit.PRINT, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.PRINT, yyline, yycolumn, yytext()));
             }
             // fall through
           case 55: break;
           case 28:
-            { System.out.println(new Symbol(LexicalUnit.WHILE, yyline, yycolumn, yytext()));
+            { this.tokens.add(new Symbol(LexicalUnit.WHILE, yyline, yycolumn, yytext()));
             }
             // fall through
           case 56: break;

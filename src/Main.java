@@ -12,6 +12,8 @@ public class Main{
             Reader fileInputStream = new FileReader( args[0] );
             Lexer lexer = new Lexer(fileInputStream);
             lexer.yylex();
+            System.out.println(lexer.getTokens().size());
+            System.out.println(lexer.getTokens().get(lexer.getTokens().size()-1));
         }catch(Exception e){
             System.err.println( "Exception in Main " + e.toString() );
             e.printStackTrace();
