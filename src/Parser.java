@@ -25,6 +25,7 @@ public class Parser {
 
     void match(LexicalUnit lu) throws Exception{
         if(lu == tokens.get(0).getType()){
+            System.out.println("Matched " + tokens.get(0).getType());
             tokens.remove(0);
         }else{
             syntax_error(Arrays.asList(lu));
@@ -40,7 +41,7 @@ public class Parser {
             expectedString += lu.toString() + ", ";
         }
         throw new Exception("Syntax Error, unexpected symbol at line: "+line+", col: "+column+"."
-                            +" (I was expecting "+ expectedString +")");
+                            +"Found "+tokens.get(0).getType()+". (Expecting: "+ expectedString +")");
     }
 
     void program() throws Exception{;
@@ -48,6 +49,7 @@ public class Parser {
         match(LexicalUnit.PROGNAME);
         code();
         match(LexicalUnit.END);
+        System.out.println("Program is syntactically correct!");
     }
 
     void code() throws Exception{
@@ -165,7 +167,7 @@ public class Parser {
     void if_() throws Exception{
         match(LexicalUnit.IF);
         match(LexicalUnit.LPAREN);
-        exprArith();
+        cond();
         match(LexicalUnit.RPAREN);
         match(LexicalUnit.THEN);
         code();
