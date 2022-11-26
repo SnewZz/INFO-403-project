@@ -605,6 +605,8 @@ class Lexer {
 	for(Symbol s : variables){
 		//System.out.println(s.getValue()+" "+s.getLine());
 	}
+
+    this.tokens.add(new Symbol(LexicalUnit.EOS, yyline, yycolumn, "EOS"));
     }
   }
 

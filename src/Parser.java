@@ -37,11 +37,19 @@ public class Parser {
         int column = tokens.get(0).getColumn();
 
         String expectedString = "";
-        for(LexicalUnit lu : expected){
-            expectedString += lu.toString() + ", ";
+
+        if(expected.size() == 1){
+            expectedString += expected.get(0).toString();
+        }else{
+            for(int i = 0; i < expected.size()-2; i++){
+                expectedString += expected.get(i).toString() + ", ";
+            }
+            expectedString += expected.get(expected.size()-1).toString();
         }
-        throw new Exception("Syntax Error, unexpected symbol at line: "+line+", col: "+column+"."
-                            +"Found "+tokens.get(0).getType()+". (Expecting: "+ expectedString +")");
+
+        throw new Exception("Syntax Error ! Unexpected symbol at line: "+line+", col: "+column+". "
+                            +"Found '"+tokens.get(0).getValue()+"' as "+tokens.get(0).getType()+". "
+                            +"(Expecting: "+ expectedString +")");
     }
 
     void program() throws Exception{;
