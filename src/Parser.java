@@ -148,6 +148,7 @@ public class Parser {
             case MINUS:
                 match(LexicalUnit.MINUS);
                 atom();
+            break;
             case VARNAME:
                 match(LexicalUnit.VARNAME);
             break;
