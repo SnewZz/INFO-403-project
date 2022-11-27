@@ -2,21 +2,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class represents the parser for the grammar of the FORTRESS language.
+ */
 public class Parser {
     private ArrayList<Symbol> tokens;
     private ArrayList<Integer> leftMostDerivationArray;
     private ParseTree parseTree;
 
+    /**
+     * This is the constructor of the parser class.
+     * @param tokens The list of tokens to parse.
+     */
     public Parser(ArrayList<Symbol> tokens) {
         this.tokens = tokens;
         this.leftMostDerivationArray = new ArrayList<>();
         this.parseTree = null;
     }
 
+    /**
+     * This is the getter of the parse tree generated.
+     * @return the parse tree.
+     */
     public ParseTree getParseTree(){
         return parseTree;
     }
 
+    /**
+     * This method returns the next token to handle.
+     * @return the next token.
+     */
     Symbol next_token() {
         Symbol currToken;
 
@@ -29,6 +44,12 @@ public class Parser {
         return currToken;
     }
 
+    /**
+     * This method checks if the next token to handle correspond to the expected lexical unit given in parameter.
+     * @param lu the expected lexical unit
+     * @return a node for the parse tree if there is a match.
+     * @throws Exception throw an exception if there is a syntax error.
+     */
     ParseTree match(LexicalUnit lu) throws Exception {
         Symbol s = null;
         if (lu == tokens.get(0).getType()) {
@@ -41,10 +62,14 @@ public class Parser {
         return new ParseTree(s);
     }
 
+    /**
+     * This method is called when a syntax error is encountered. It throws an exception and displays the syntax elements that were expected.
+     * @param expected The list of lexical units that could be expected.
+     * @throws Exception Throws an exception which shows the unexpected symbol and the list of lexical units that were expected.
+     */
     void syntax_error(List<LexicalUnit> expected) throws Exception {
         int line = tokens.get(0).getLine();
         int column = tokens.get(0).getColumn();
-
         String expectedString = "";
 
         if (expected.size() == 1) {
@@ -61,11 +86,12 @@ public class Parser {
                 + "(Expecting: " + expectedString + ")");
     }
 
-    String getLeftMostDerivation(ArrayList<Integer> array) {
+    
+    String getLeftMostDerivation() {
         String derivation = "";
 
-        for (int i = 0; i < array.size(); i++) {
-            derivation += array.get(i) + " ";
+        for (int i = 0; i < this.leftMostDerivationArray.size(); i++) {
+            derivation += this.leftMostDerivationArray.get(i) + " ";
         }
 
         return derivation;
@@ -73,7 +99,7 @@ public class Parser {
 
     void parse() throws Exception {
         this.parseTree = program();
-        System.out.println(getLeftMostDerivation(leftMostDerivationArray));
+        System.out.println(getLeftMostDerivation());
         // System.out.println("Program is syntactically correct!");
     }
 

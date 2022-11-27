@@ -1,9 +1,15 @@
 import java.io.FileWriter;
 import java.io.IOException;
-
+/**
+ * This class handle the creation of the latex file.
+ */
 public class TexHandler {
+    /**
+     * This method creates the latex file to create the parse tree.
+     * @param fileName The name of the new file to create.
+     * @param content The content of the latex file.
+     */
   public static void createTreeTex(String fileName, String content) {
-    System.out.println("here");
     try {
         FileWriter myWriter = new FileWriter(fileName);
         myWriter.write(content);
