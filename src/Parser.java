@@ -90,7 +90,6 @@ public class Parser {
     }
 
     ParseTree code() throws Exception {
-        leftMostDerivationArray.add(2);
         Symbol tok = next_token();
         switch (tok.getType()) {
             case ELSE:
@@ -100,6 +99,7 @@ public class Parser {
                         Arrays.asList(new ParseTree(new Symbol(LexicalUnit.EPSILON, "E"))));
             default:
         }
+        leftMostDerivationArray.add(2);
         ParseTree pt1 = instruction();
         ParseTree pt2 = match(LexicalUnit.COMMA);
         ParseTree pt3 = code();
