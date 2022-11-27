@@ -70,6 +70,10 @@ public class Symbol{
 		return "Non-terminal symbol";
 	}
 
+	/**
+	 * This method returns the value with latex notation into a String.
+	 * @return the value converts into the latex notation.
+	 */
 	public String toTexString(){
 		String value = this.value != null? this.value.toString() : "null";
 		if(value == "E"){
