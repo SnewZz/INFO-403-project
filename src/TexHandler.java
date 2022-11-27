@@ -3,7 +3,6 @@ import java.io.IOException;
 
 public class TexHandler {
   public static void createTreeTex(String fileName, String content) {
-    System.out.println("here");
     try {
         FileWriter myWriter = new FileWriter(fileName);
         myWriter.write(content);
