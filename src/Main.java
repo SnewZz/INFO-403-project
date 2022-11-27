@@ -17,7 +17,6 @@ public class Main{
             
             Parser parser = new Parser(lexer.getTokens());
             parser.parse();
-            
             if(args.length > 2 && args[1].equals("-wt")){
                 ParseTree pt = parser.getParseTree();
                 TexHandler.createTreeTex(args[2], pt.toLaTeX());
