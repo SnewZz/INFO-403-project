@@ -73,6 +73,7 @@ public class Parser {
 
     void parse() throws Exception {
         this.parseTree = program();
+        match(LexicalUnit.EOS);
         System.out.println(getLeftMostDerivation(leftMostDerivationArray));
         // System.out.println("Program is syntactically correct!");
     }
