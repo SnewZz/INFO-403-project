@@ -73,7 +73,9 @@ public class Symbol{
 	public String toTexString(){
 		String value = this.value != null? this.value.toString() : "null";
 		if(value == "E"){
-			value = "\\epsilon";
+			value = "$\\epsilon$";
+		}else{
+			value = "\\texttt{"+value+"}";
 		}
 		return value;
 	}
