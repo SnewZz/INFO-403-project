@@ -4,13 +4,17 @@ import java.util.List;
 
 public class Parser {
     private ArrayList<Symbol> tokens;
-    private ArrayList<Symbol> variables;
     private ArrayList<Integer> leftMostDerivationArray;
+    private ParseTree parseTree;
 
-    public Parser(ArrayList<Symbol> tokens, ArrayList<Symbol> variables) {
+    public Parser(ArrayList<Symbol> tokens) {
         this.tokens = tokens;
-        this.variables = variables;
         this.leftMostDerivationArray = new ArrayList<>();
+        this.parseTree = null;
+    }
+
+    public ParseTree getParseTree(){
+        return parseTree;
     }
 
     Symbol next_token() {
@@ -25,13 +29,16 @@ public class Parser {
         return currToken;
     }
 
-    void match(LexicalUnit lu) throws Exception {
+    ParseTree match(LexicalUnit lu) throws Exception {
+        Symbol s = null;
         if (lu == tokens.get(0).getType()) {
-            System.out.println("Matched " + tokens.get(0).getType());
+            // System.out.println("Matched " + tokens.get(0).getType());
+            s = new Symbol(lu, tokens.get(0).getValue().toString());
             tokens.remove(0);
         } else {
             syntax_error(Arrays.asList(lu));
         }
+        return new ParseTree(s);
     }
 
     void syntax_error(List<LexicalUnit> expected) throws Exception {
@@ -54,7 +61,7 @@ public class Parser {
                 + "(Expecting: " + expectedString + ")");
     }
 
-    String getLeftMostDerivation(ArrayList<Integer> array){
+    String getLeftMostDerivation(ArrayList<Integer> array) {
         String derivation = "";
 
         for (int i = 0; i < array.size(); i++) {
@@ -64,110 +71,127 @@ public class Parser {
         return derivation;
     }
 
-    void program() throws Exception {
-        leftMostDerivationArray.add(1);
-        match(LexicalUnit.BEGIN);
-        match(LexicalUnit.PROGNAME);
-        code();
-        match(LexicalUnit.END);
-        System.out.println("Program is syntactically correct!");
-        System.out.println("Left most derivation:\n" + getLeftMostDerivation(leftMostDerivationArray));
+    void parse() throws Exception {
+        this.parseTree = program();
+        System.out.println(getLeftMostDerivation(leftMostDerivationArray));
+        // System.out.println("Program is syntactically correct!");
     }
 
-    void code() throws Exception {
+    ParseTree program() throws Exception {
+        leftMostDerivationArray.add(1);
+        ParseTree pt1 = match(LexicalUnit.BEGIN);
+        ParseTree pt2 = match(LexicalUnit.PROGNAME);
+        ParseTree pt3 = code();
+        ParseTree pt4 = match(LexicalUnit.END);
+        return new ParseTree(new Symbol(LexicalUnit.PROGRAM_, "<Program>"),
+                Arrays.asList(pt1, pt2, pt3, pt4));
+
+    }
+
+    ParseTree code() throws Exception {
         leftMostDerivationArray.add(2);
         Symbol tok = next_token();
         switch (tok.getType()) {
             case ELSE:
             case END:
                 leftMostDerivationArray.add(3);
-                return;
+                return new ParseTree(new Symbol(LexicalUnit.CODE_, "<Code>"),
+                        Arrays.asList(new ParseTree(new Symbol(LexicalUnit.EPSILON, "E"))));
             default:
         }
-        instruction();
-        match(LexicalUnit.COMMA);
-        code();
-
+        ParseTree pt1 = instruction();
+        ParseTree pt2 = match(LexicalUnit.COMMA);
+        ParseTree pt3 = code();
+        return new ParseTree(new Symbol(LexicalUnit.CODE_, "<Code>"),
+                Arrays.asList(pt1, pt2, pt3));
     }
 
-    void instruction() throws Exception {
+    ParseTree instruction() throws Exception {
         Symbol tok = next_token();
+        ParseTree pt = null;
         switch (tok.getType()) {
             case VARNAME:
                 leftMostDerivationArray.add(4);
-                assign();
+                pt = assign();
                 break;
             case IF:
                 leftMostDerivationArray.add(5);
-                if_();
+                pt = if_();
                 break;
             case WHILE:
                 leftMostDerivationArray.add(6);
-                while_();
+                pt = while_();
                 break;
             case PRINT:
                 leftMostDerivationArray.add(7);
-                print();
+                pt = print();
                 break;
             case READ:
                 leftMostDerivationArray.add(8);
-                read();
+                pt = read();
                 break;
             default:
                 syntax_error(Arrays.asList(LexicalUnit.VARNAME, LexicalUnit.IF,
                         LexicalUnit.WHILE, LexicalUnit.PRINT, LexicalUnit.READ));
         }
+        return new ParseTree(new Symbol(LexicalUnit.INSTRUCTION_, "<Instruction>"), Arrays.asList(pt));
     }
 
-    void assign() throws Exception {
+    ParseTree assign() throws Exception {
         leftMostDerivationArray.add(9);
-        match(LexicalUnit.VARNAME);
-        match(LexicalUnit.ASSIGN);
-        exprArith();
+        ParseTree pt1 = match(LexicalUnit.VARNAME);
+        ParseTree pt2 = match(LexicalUnit.ASSIGN);
+        ParseTree pt3 = exprArith();
+        return new ParseTree(new Symbol(LexicalUnit.ASSIGN_, "<Assign>"), Arrays.asList(pt1, pt2, pt3));
     }
 
-    void exprArith() throws Exception {
+    ParseTree exprArith() throws Exception {
         leftMostDerivationArray.add(10);
-        mulDiv();
-        exprArithQuote();
+        ParseTree pt1 = mulDiv();
+        ParseTree pt2 = exprArithQuote();
+        return new ParseTree(new Symbol(LexicalUnit.EXPRARITH_, "<ExprArith>"), Arrays.asList(pt1, pt2));
     }
 
-    void exprArithQuote() throws Exception {
+    ParseTree exprArithQuote() throws Exception {
         Symbol tok = next_token();
+        ParseTree pt1 = null;
         switch (tok.getType()) {
             case COMMA:
             case RPAREN:
             case EQUAL:
             case SMALLER:
             case GREATER:
-                leftMostDerivationArray.add(13);
-                return;
+                leftMostDerivationArray.add(13);      
+                return new ParseTree(new Symbol(LexicalUnit.EXPRARITHQUOTE_, "<ExprArith'>"),
+                        Arrays.asList(new ParseTree(new Symbol(LexicalUnit.EPSILON, "E"))));
             case PLUS:
                 leftMostDerivationArray.add(11);
-                match(LexicalUnit.PLUS);
+                pt1 = match(LexicalUnit.PLUS);
                 break;
             case MINUS:
                 leftMostDerivationArray.add(12);
-                match(LexicalUnit.MINUS);
+                pt1 = match(LexicalUnit.MINUS);
                 break;
             default:
                 syntax_error(Arrays.asList(LexicalUnit.COMMA, LexicalUnit.RPAREN,
                         LexicalUnit.EQUAL, LexicalUnit.SMALLER, LexicalUnit.GREATER,
                         LexicalUnit.PLUS, LexicalUnit.MINUS));
-                return;
         }
-        mulDiv();
-        exprArithQuote();
+        ParseTree pt2 = mulDiv();
+        ParseTree pt3 = exprArithQuote();
+        return new ParseTree(new Symbol(LexicalUnit.EXPRARITHQUOTE_, "ExprArith'"), Arrays.asList(pt1, pt2, pt3));
     }
 
-    void mulDiv() throws Exception {
+    ParseTree mulDiv() throws Exception {
         leftMostDerivationArray.add(14);
-        atom();
-        mulDivQuote();
+        ParseTree pt1 = atom();
+        ParseTree pt2 = mulDivQuote();
+        return new ParseTree(new Symbol(LexicalUnit.MULDIV_, "<MulDiv'>"), Arrays.asList(pt1, pt2));
     }
 
-    void mulDivQuote() throws Exception {
+    ParseTree mulDivQuote() throws Exception {
         Symbol tok = next_token();
+        ParseTree pt1 = null;
         switch (tok.getType()) {
             case COMMA:
             case RPAREN:
@@ -177,139 +201,165 @@ public class Parser {
             case PLUS:
             case MINUS:
                 leftMostDerivationArray.add(17);
-                return;
+                return new ParseTree(new Symbol(LexicalUnit.MULDIVQUOTE_, "<MulDiv'>"),
+                        Arrays.asList(new ParseTree(new Symbol(LexicalUnit.EPSILON, "E"))));
             case TIMES:
                 leftMostDerivationArray.add(15);
-                match(LexicalUnit.TIMES);
+                pt1 = match(LexicalUnit.TIMES);
                 break;
             case DIVIDE:
                 leftMostDerivationArray.add(16);
-                match(LexicalUnit.DIVIDE);
+                pt1 = match(LexicalUnit.DIVIDE);
                 break;
             default:
                 syntax_error(Arrays.asList(LexicalUnit.COMMA, LexicalUnit.RPAREN,
                         LexicalUnit.EQUAL, LexicalUnit.SMALLER, LexicalUnit.GREATER,
                         LexicalUnit.PLUS, LexicalUnit.MINUS, LexicalUnit.TIMES,
                         LexicalUnit.DIVIDE));
-                return;
         }
-        atom();
-        mulDivQuote();
+        ParseTree pt2 = atom();
+        ParseTree pt3 = mulDivQuote();
+        return new ParseTree(new Symbol(LexicalUnit.MULDIVQUOTE_, "<MulDiv'>"), Arrays.asList(pt1, pt2, pt3));
     }
 
-    void atom() throws Exception {
+    ParseTree atom() throws Exception {
         Symbol tok = next_token();
+        ParseTree pt1 = null;
+        ParseTree pt2 = null;
+        ParseTree pt3 = null;
         switch (tok.getType()) {
             case MINUS:
                 leftMostDerivationArray.add(18);
-                match(LexicalUnit.MINUS);
-                atom();
+                pt1 = match(LexicalUnit.MINUS);
+                pt2 = atom();
                 break;
             case VARNAME:
                 leftMostDerivationArray.add(19);
-                match(LexicalUnit.VARNAME);
+                pt1 = match(LexicalUnit.VARNAME);
                 break;
             case NUMBER:
                 leftMostDerivationArray.add(20);
-                match(LexicalUnit.NUMBER);
+                pt1 = match(LexicalUnit.NUMBER);
                 break;
             case LPAREN:
                 leftMostDerivationArray.add(21);
-                match(LexicalUnit.LPAREN);
-                exprArith();
-                match(LexicalUnit.RPAREN);
+                pt1 = match(LexicalUnit.LPAREN);     
+                pt2 = exprArith();
+                pt3 = match(LexicalUnit.RPAREN);
                 break;
             default:
                 syntax_error(Arrays.asList(LexicalUnit.VARNAME, LexicalUnit.NUMBER,
                         LexicalUnit.LPAREN));
         }
+        ArrayList<ParseTree> array = new ArrayList<>();
+        array.add(pt1);
+        if (pt2 != null){
+            array.add(pt2);
+            if(pt3 != null){
+                array.add(pt3);
+            }
+        }
+        return new ParseTree(new Symbol(LexicalUnit.ATOM_, "<Atom>"), array);
     }
 
-    void if_() throws Exception {
+    ParseTree if_() throws Exception {
         leftMostDerivationArray.add(22);
-        match(LexicalUnit.IF);
-        match(LexicalUnit.LPAREN);
-        cond();
-        match(LexicalUnit.RPAREN);
-        match(LexicalUnit.THEN);
-        code();
-        ifSeq();
+        ParseTree pt1 = match(LexicalUnit.IF);
+        ParseTree pt2 = match(LexicalUnit.LPAREN);
+        ParseTree pt3 = cond();
+        ParseTree pt4 = match(LexicalUnit.RPAREN);
+        ParseTree pt5 = match(LexicalUnit.THEN);
+        ParseTree pt6 = code();
+        ParseTree pt7 = ifSeq();
+        return new ParseTree(new Symbol(LexicalUnit.IF_, "<If>"), Arrays.asList(pt1, pt2, pt3, pt4, pt5, pt6, pt7));
     }
 
-    void ifSeq() throws Exception {
+    ParseTree ifSeq() throws Exception {
         Symbol tok = next_token();
+        ParseTree pt1 = null;
+        ParseTree pt2 = null;
+        ParseTree pt3 = null;
         switch (tok.getType()) {
             case END:
                 leftMostDerivationArray.add(23);
-                match(LexicalUnit.END);
+                pt1 = match(LexicalUnit.END);
                 break;
             case ELSE:
                 leftMostDerivationArray.add(24);
-                match(LexicalUnit.ELSE);
-                code();
-                match(LexicalUnit.END);
+                pt1 = match(LexicalUnit.ELSE);
+                pt2 = code();
+                pt3 = match(LexicalUnit.END);
                 break;
             default:
                 syntax_error(Arrays.asList(LexicalUnit.ELSE, LexicalUnit.END));
         }
-
+        ArrayList<ParseTree> array = new ArrayList<>();
+        array.add(pt1);
+        if (pt2 != null){
+            array.add(pt2);
+            array.add(pt3);  
+        }
+        return new ParseTree(new Symbol(LexicalUnit.IFSEQ_, "<IfSeq>"), array);
     }
 
-    void cond() throws Exception {
+    ParseTree cond() throws Exception {
         leftMostDerivationArray.add(25);
-        exprArith();
-        comp();
-        exprArith();
-
+        ParseTree pt1 = exprArith();
+        ParseTree pt2 = comp();
+        ParseTree pt3 = exprArith();
+        return new ParseTree(new Symbol(LexicalUnit.IFSEQ_, "<Cond>"), Arrays.asList(pt1, pt2, pt3));
     }
 
-    void comp() throws Exception {
+    ParseTree comp() throws Exception {
         Symbol tok = next_token();
+        ParseTree pt1 = null;
         switch (tok.getType()) {
             case EQUAL:
                 leftMostDerivationArray.add(26);
-                match(LexicalUnit.EQUAL);
+                pt1 = match(LexicalUnit.EQUAL);
                 break;
             case SMALLER:
                 leftMostDerivationArray.add(28);
-                match(LexicalUnit.SMALLER);
+                pt1 = match(LexicalUnit.SMALLER);
                 break;
             case GREATER:
                 leftMostDerivationArray.add(27);
-                match(LexicalUnit.GREATER);
+                pt1 = match(LexicalUnit.GREATER);
                 break;
             default:
                 syntax_error(Arrays.asList(LexicalUnit.EQUAL, LexicalUnit.SMALLER,
                         LexicalUnit.GREATER));
-        }
-
+        }  
+        return new ParseTree(new Symbol(LexicalUnit.IFSEQ_, "<Comp>"), Arrays.asList(pt1));
     }
 
-    void while_() throws Exception {
+    ParseTree while_() throws Exception {
         leftMostDerivationArray.add(29);
-        match(LexicalUnit.WHILE);
-        match(LexicalUnit.LPAREN);
-        cond();
-        match(LexicalUnit.RPAREN);
-        match(LexicalUnit.DO);
-        code();
-        match(LexicalUnit.END);
+        ParseTree pt1 = match(LexicalUnit.WHILE);
+        ParseTree pt2 = match(LexicalUnit.LPAREN);
+        ParseTree pt3 = cond();
+        ParseTree pt4 = match(LexicalUnit.RPAREN);
+        ParseTree pt5 = match(LexicalUnit.DO);
+        ParseTree pt6 = code();
+        ParseTree pt7 = match(LexicalUnit.END);
+        return new ParseTree(new Symbol(LexicalUnit.WHILE_, "<While>"), Arrays.asList(pt1, pt2, pt3, pt4, pt5, pt6, pt7));
     }
 
-    void print() throws Exception {
+    ParseTree print() throws Exception {
         leftMostDerivationArray.add(30);
-        match(LexicalUnit.PRINT);
-        match(LexicalUnit.LPAREN);
-        match(LexicalUnit.VARNAME);
-        match(LexicalUnit.RPAREN);
-
+        ParseTree pt1 = match(LexicalUnit.PRINT);
+        ParseTree pt2 = match(LexicalUnit.LPAREN);
+        ParseTree pt3 = match(LexicalUnit.VARNAME);
+        ParseTree pt4 = match(LexicalUnit.RPAREN);
+        return new ParseTree(new Symbol(LexicalUnit.PRINT_, "<Print>"), Arrays.asList(pt1, pt2, pt3, pt4));
     }
 
-    void read() throws Exception {
+    ParseTree read() throws Exception {
         leftMostDerivationArray.add(31);
-        match(LexicalUnit.READ);
-        match(LexicalUnit.LPAREN);
-        match(LexicalUnit.VARNAME);
-        match(LexicalUnit.RPAREN);
+        ParseTree pt1 = match(LexicalUnit.READ);
+        ParseTree pt2 = match(LexicalUnit.LPAREN);
+        ParseTree pt3 = match(LexicalUnit.VARNAME);
+        ParseTree pt4 = match(LexicalUnit.RPAREN);
+        return new ParseTree(new Symbol(LexicalUnit.PRINT_, "<Read>"), Arrays.asList(pt1, pt2, pt3, pt4));
     }
 }

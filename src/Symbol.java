@@ -69,4 +69,12 @@ public class Symbol{
 		}
 		return "Non-terminal symbol";
 	}
+
+	public String toTexString(){
+		String value = this.value != null? this.value.toString() : "null";
+		if(value == "E"){
+			value = "\\epsilon";
+		}
+		return value;
+	}
 }

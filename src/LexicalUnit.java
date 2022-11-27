@@ -23,5 +23,23 @@ public enum LexicalUnit{
     DO,
     PRINT,
     READ,
-    EOS
+    EOS,
+    // variables (followed by an underscore)
+    PROGRAM_,
+    CODE_,
+    INSTRUCTION_,
+    ASSIGN_,
+    EXPRARITH_,
+    EXPRARITHQUOTE_,
+    MULDIV_,
+    MULDIVQUOTE_,
+    ATOM_,
+    IF_,
+    IFSEQ_,
+    COND_,
+    COMP_,
+    WHILE_,
+    PRINT_,
+    READ_,
+    EPSILON
 }

@@ -65,13 +65,13 @@ class Lexer {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\12\0\1\1\2\2\1\3\27\0\1\4\2\0\1\5"+
-    "\1\6\1\7\1\10\1\11\1\12\1\0\1\13\1\14"+
-    "\11\15\1\16\1\0\1\17\1\20\1\21\2\0\1\22"+
-    "\1\23\1\24\1\25\1\26\1\27\1\30\1\31\1\32"+
-    "\2\24\1\33\1\24\1\34\1\35\1\36\1\24\1\37"+
-    "\1\40\1\41\2\24\1\42\3\24\6\0\32\43\12\0"+
-    "\1\2\u01a2\0\2\2\326\0\u0100\2";
+    "\12\0\1\1\2\2\1\3\22\0\1\4\4\0\1\5"+
+    "\2\0\1\6\1\7\1\10\1\11\1\12\1\13\1\0"+
+    "\1\14\1\15\11\16\1\17\1\0\1\20\1\21\1\22"+
+    "\2\0\1\23\1\24\1\25\1\26\1\27\1\30\1\31"+
+    "\1\32\1\33\2\25\1\34\1\25\1\35\1\36\1\37"+
+    "\1\25\1\40\1\41\1\42\2\25\1\43\3\25\6\0"+
+    "\32\44\12\0\1\2\u01a2\0\2\2\326\0\u0100\2";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[1024];
@@ -98,15 +98,15 @@ class Lexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\2\0\1\1\1\2\2\1\1\3\1\4\1\5\1\6"+
-    "\1\7\1\10\1\11\2\12\1\1\1\13\1\14\1\15"+
-    "\11\1\1\16\1\1\1\17\1\20\1\21\1\0\1\22"+
-    "\1\0\1\23\2\0\1\24\4\0\1\25\2\20\2\0"+
-    "\1\26\5\0\1\27\1\0\1\30\1\31\1\0\1\32"+
-    "\1\33\1\34";
+    "\2\0\1\1\1\2\1\3\1\2\1\1\1\4\1\5"+
+    "\1\6\1\7\1\10\1\11\1\12\2\13\1\1\1\14"+
+    "\1\15\1\16\11\1\1\17\1\2\1\20\1\21\1\22"+
+    "\1\0\1\23\1\0\1\24\2\0\1\25\4\0\1\26"+
+    "\2\21\2\0\1\27\5\0\1\30\1\0\1\31\1\32"+
+    "\1\0\1\33\1\34\1\35";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[63];
+    int [] result = new int[64];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -131,17 +131,17 @@ class Lexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\44\0\110\0\110\0\154\0\220\0\110\0\110"+
-    "\0\110\0\110\0\110\0\110\0\110\0\110\0\264\0\330"+
-    "\0\110\0\110\0\110\0\374\0\u0120\0\u0144\0\u0168\0\u018c"+
-    "\0\u01b0\0\u01d4\0\u01f8\0\u021c\0\u0240\0\u0264\0\110\0\u0288"+
-    "\0\110\0\374\0\u02ac\0\u02d0\0\374\0\u02f4\0\u0318\0\374"+
-    "\0\u033c\0\u0360\0\u0384\0\u03a8\0\110\0\110\0\u03cc\0\u03f0"+
-    "\0\u0414\0\374\0\u0438\0\u045c\0\u0480\0\u04a4\0\u04c8\0\374"+
-    "\0\u04ec\0\374\0\374\0\u0510\0\374\0\374\0\374";
+    "\0\0\0\45\0\112\0\112\0\112\0\157\0\224\0\112"+
+    "\0\112\0\112\0\112\0\112\0\112\0\112\0\112\0\271"+
+    "\0\336\0\112\0\112\0\112\0\u0103\0\u0128\0\u014d\0\u0172"+
+    "\0\u0197\0\u01bc\0\u01e1\0\u0206\0\u022b\0\u0250\0\u0275\0\112"+
+    "\0\u029a\0\112\0\u0103\0\u02bf\0\u02e4\0\u0103\0\u0309\0\u032e"+
+    "\0\u0103\0\u0353\0\u0378\0\u039d\0\u03c2\0\112\0\112\0\u03e7"+
+    "\0\u040c\0\u0431\0\u0103\0\u0456\0\u047b\0\u04a0\0\u04c5\0\u04ea"+
+    "\0\u0103\0\u050f\0\u0103\0\u0103\0\u0534\0\u0103\0\u0103\0\u0103";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[63];
+    int [] result = new int[64];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -164,39 +164,39 @@ class Lexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\2\3\1\4\1\5\1\6\1\7\1\10\1\11\1\12"+
-    "\1\13\1\14\1\15\1\16\1\17\1\20\1\21\1\22"+
-    "\1\23\1\24\1\25\1\24\1\26\1\27\3\24\1\30"+
-    "\3\24\1\31\1\32\1\24\1\33\1\34\1\35\2\3"+
-    "\1\4\1\5\1\36\37\3\45\0\1\3\46\0\1\37"+
-    "\53\0\2\17\44\0\1\40\1\0\1\41\37\0\2\42"+
-    "\4\0\21\42\1\43\14\0\2\42\4\0\4\42\1\44"+
-    "\14\42\1\43\14\0\2\42\4\0\13\42\1\45\5\42"+
-    "\1\43\14\0\2\42\4\0\11\42\1\46\1\47\6\42"+
-    "\1\43\14\0\2\42\4\0\5\42\1\50\13\42\1\43"+
-    "\14\0\2\42\4\0\15\42\1\51\3\42\1\43\14\0"+
-    "\2\42\4\0\4\42\1\52\14\42\1\43\14\0\2\42"+
-    "\4\0\7\42\1\53\11\42\1\43\14\0\2\42\4\0"+
-    "\7\42\1\54\11\42\1\43\14\0\2\35\25\0\1\35"+
-    "\4\0\1\55\37\0\1\40\1\56\1\40\1\57\40\40"+
-    "\14\0\2\43\4\0\22\43\14\0\2\42\4\0\6\42"+
-    "\1\60\12\42\1\43\14\0\2\42\4\0\16\42\1\61"+
-    "\2\42\1\43\14\0\2\42\4\0\3\42\1\62\15\42"+
-    "\1\43\14\0\2\42\4\0\10\42\1\63\10\42\1\43"+
-    "\14\0\2\42\4\0\1\64\20\42\1\43\14\0\2\42"+
-    "\4\0\4\42\1\65\14\42\1\43\14\0\2\42\4\0"+
-    "\10\42\1\66\10\42\1\43\1\0\1\56\56\0\2\42"+
-    "\4\0\10\42\1\67\10\42\1\43\14\0\2\42\4\0"+
-    "\4\42\1\70\14\42\1\43\14\0\2\42\4\0\12\42"+
-    "\1\71\6\42\1\43\14\0\2\42\4\0\3\42\1\72"+
-    "\15\42\1\43\14\0\2\42\4\0\12\42\1\73\6\42"+
-    "\1\43\14\0\2\42\4\0\11\42\1\74\7\42\1\43"+
-    "\14\0\2\42\4\0\12\42\1\75\6\42\1\43\14\0"+
-    "\2\42\4\0\17\42\1\76\1\42\1\43\14\0\2\42"+
-    "\4\0\4\42\1\77\14\42\1\43";
+    "\1\3\1\4\1\5\1\6\1\4\1\7\1\10\1\11"+
+    "\1\12\1\13\1\14\1\15\1\16\1\17\1\20\1\21"+
+    "\1\22\1\23\1\24\1\25\1\26\1\25\1\27\1\30"+
+    "\3\25\1\31\3\25\1\32\1\33\1\25\1\34\1\35"+
+    "\1\36\2\4\1\5\1\6\1\4\1\37\37\4\46\0"+
+    "\1\4\50\0\1\40\54\0\2\20\45\0\1\41\1\0"+
+    "\1\42\40\0\2\43\4\0\21\43\1\44\15\0\2\43"+
+    "\4\0\4\43\1\45\14\43\1\44\15\0\2\43\4\0"+
+    "\13\43\1\46\5\43\1\44\15\0\2\43\4\0\11\43"+
+    "\1\47\1\50\6\43\1\44\15\0\2\43\4\0\5\43"+
+    "\1\51\13\43\1\44\15\0\2\43\4\0\15\43\1\52"+
+    "\3\43\1\44\15\0\2\43\4\0\4\43\1\53\14\43"+
+    "\1\44\15\0\2\43\4\0\7\43\1\54\11\43\1\44"+
+    "\15\0\2\43\4\0\7\43\1\55\11\43\1\44\15\0"+
+    "\2\36\25\0\1\36\5\0\1\56\37\0\1\41\1\57"+
+    "\1\41\1\60\41\41\15\0\2\44\4\0\22\44\15\0"+
+    "\2\43\4\0\6\43\1\61\12\43\1\44\15\0\2\43"+
+    "\4\0\16\43\1\62\2\43\1\44\15\0\2\43\4\0"+
+    "\3\43\1\63\15\43\1\44\15\0\2\43\4\0\10\43"+
+    "\1\64\10\43\1\44\15\0\2\43\4\0\1\65\20\43"+
+    "\1\44\15\0\2\43\4\0\4\43\1\66\14\43\1\44"+
+    "\15\0\2\43\4\0\10\43\1\67\10\43\1\44\1\0"+
+    "\1\57\60\0\2\43\4\0\10\43\1\70\10\43\1\44"+
+    "\15\0\2\43\4\0\4\43\1\71\14\43\1\44\15\0"+
+    "\2\43\4\0\12\43\1\72\6\43\1\44\15\0\2\43"+
+    "\4\0\3\43\1\73\15\43\1\44\15\0\2\43\4\0"+
+    "\12\43\1\74\6\43\1\44\15\0\2\43\4\0\11\43"+
+    "\1\75\7\43\1\44\15\0\2\43\4\0\12\43\1\76"+
+    "\6\43\1\44\15\0\2\43\4\0\17\43\1\77\1\43"+
+    "\1\44\15\0\2\43\4\0\4\43\1\100\14\43\1\44";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[1332];
+    int [] result = new int[1369];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -239,13 +239,13 @@ class Lexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\2\11\2\1\10\11\2\1\3\11\13\1\1\11"+
+    "\2\0\3\11\2\1\10\11\2\1\3\11\13\1\1\11"+
     "\1\1\1\11\1\0\1\1\1\0\1\1\2\0\1\1"+
     "\4\0\2\11\1\1\2\0\1\1\5\0\1\1\1\0"+
     "\2\1\1\0\3\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[63];
+    int [] result = new int[64];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -763,71 +763,76 @@ class Lexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { 
-            }
-            // fall through
-          case 29: break;
-          case 2:
-            { System.out.print(yytext());
+            { throw new Error("An unexpected symbol has been encountered : '"+yytext()+"'. At line "+yyline+" and column "+yycolumn+".");
             }
             // fall through
           case 30: break;
-          case 3:
-            { this.tokens.add(new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, yytext()));
+          case 2:
+            { 
             }
             // fall through
           case 31: break;
-          case 4:
-            { this.tokens.add(new Symbol(LexicalUnit.RPAREN, yyline, yycolumn, yytext()));
+          case 3:
+            { System.out.print(yytext());
             }
             // fall through
           case 32: break;
-          case 5:
-            { this.tokens.add(new Symbol(LexicalUnit.TIMES, yyline, yycolumn, yytext()));
+          case 4:
+            { this.tokens.add(new Symbol(LexicalUnit.LPAREN, yyline, yycolumn, yytext()));
             }
             // fall through
           case 33: break;
-          case 6:
-            { this.tokens.add(new Symbol(LexicalUnit.PLUS, yyline, yycolumn, yytext()));
+          case 5:
+            { this.tokens.add(new Symbol(LexicalUnit.RPAREN, yyline, yycolumn, yytext()));
             }
             // fall through
           case 34: break;
-          case 7:
-            { this.tokens.add(new Symbol(LexicalUnit.COMMA, yyline, yycolumn, yytext()));
+          case 6:
+            { this.tokens.add(new Symbol(LexicalUnit.TIMES, yyline, yycolumn, yytext()));
             }
             // fall through
           case 35: break;
-          case 8:
-            { this.tokens.add(new Symbol(LexicalUnit.MINUS, yyline, yycolumn, yytext()));
+          case 7:
+            { this.tokens.add(new Symbol(LexicalUnit.PLUS, yyline, yycolumn, yytext()));
             }
             // fall through
           case 36: break;
-          case 9:
-            { this.tokens.add(new Symbol(LexicalUnit.DIVIDE, yyline, yycolumn, yytext()));
+          case 8:
+            { this.tokens.add(new Symbol(LexicalUnit.COMMA, yyline, yycolumn, yytext()));
             }
             // fall through
           case 37: break;
-          case 10:
-            { this.tokens.add(new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()));
+          case 9:
+            { this.tokens.add(new Symbol(LexicalUnit.MINUS, yyline, yycolumn, yytext()));
             }
             // fall through
           case 38: break;
-          case 11:
-            { this.tokens.add(new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, yytext()));
+          case 10:
+            { this.tokens.add(new Symbol(LexicalUnit.DIVIDE, yyline, yycolumn, yytext()));
             }
             // fall through
           case 39: break;
-          case 12:
-            { this.tokens.add(new Symbol(LexicalUnit.EQUAL, yyline, yycolumn, yytext()));
+          case 11:
+            { this.tokens.add(new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()));
             }
             // fall through
           case 40: break;
-          case 13:
-            { this.tokens.add(new Symbol(LexicalUnit.GREATER, yyline, yycolumn, yytext()));
+          case 12:
+            { this.tokens.add(new Symbol(LexicalUnit.SMALLER, yyline, yycolumn, yytext()));
             }
             // fall through
           case 41: break;
+          case 13:
+            { this.tokens.add(new Symbol(LexicalUnit.EQUAL, yyline, yycolumn, yytext()));
+            }
+            // fall through
+          case 42: break;
           case 14:
+            { this.tokens.add(new Symbol(LexicalUnit.GREATER, yyline, yycolumn, yytext()));
+            }
+            // fall through
+          case 43: break;
+          case 15:
             { Symbol var = new Symbol(LexicalUnit.VARNAME, yyline, yycolumn, yytext());
     							if(!variables.stream().anyMatch(s -> s.getValue().toString().equals(var.getValue().toString()))){
     								variables.add(var);
@@ -835,79 +840,79 @@ class Lexer {
                                 this.tokens.add(var);
             }
             // fall through
-          case 42: break;
-          case 15:
+          case 44: break;
+          case 16:
             { stackStateComment++;
                                 yybegin(COMMENT);
             }
             // fall through
-          case 43: break;
-          case 16:
+          case 45: break;
+          case 17:
             { yytext();
             }
             // fall through
-          case 44: break;
-          case 17:
+          case 46: break;
+          case 18:
             { this.tokens.add(new Symbol(LexicalUnit.ASSIGN, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 45: break;
-          case 18:
+          case 47: break;
+          case 19:
             { this.tokens.add(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 46: break;
-          case 19:
+          case 48: break;
+          case 20:
             { this.tokens.add(new Symbol(LexicalUnit.DO, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 47: break;
-          case 20:
+          case 49: break;
+          case 21:
             { this.tokens.add(new Symbol(LexicalUnit.IF, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 48: break;
-          case 21:
+          case 50: break;
+          case 22:
             { stackStateComment--;
                                 yybegin(YYINITIAL);
             }
             // fall through
-          case 49: break;
-          case 22:
+          case 51: break;
+          case 23:
             { this.tokens.add(new Symbol(LexicalUnit.END, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 50: break;
-          case 23:
+          case 52: break;
+          case 24:
             { this.tokens.add(new Symbol(LexicalUnit.ELSE, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 51: break;
-          case 24:
+          case 53: break;
+          case 25:
             { this.tokens.add(new Symbol(LexicalUnit.READ, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 52: break;
-          case 25:
+          case 54: break;
+          case 26:
             { this.tokens.add(new Symbol(LexicalUnit.THEN, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 53: break;
-          case 26:
+          case 55: break;
+          case 27:
             { this.tokens.add(new Symbol(LexicalUnit.BEGIN, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 54: break;
-          case 27:
+          case 56: break;
+          case 28:
             { this.tokens.add(new Symbol(LexicalUnit.PRINT, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 55: break;
-          case 28:
+          case 57: break;
+          case 29:
             { this.tokens.add(new Symbol(LexicalUnit.WHILE, yyline, yycolumn, yytext()));
             }
             // fall through
-          case 56: break;
+          case 58: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

@@ -118,7 +118,8 @@ TraditionalComment = "%%"~"%%"
     {Number}                {this.tokens.add(new Symbol(LexicalUnit.NUMBER, yyline, yycolumn, yytext()));}
     {ShortComment}               {yytext();}
     {ProgName}              {this.tokens.add(new Symbol(LexicalUnit.PROGNAME, yyline, yycolumn, yytext()));}
-    .                       {}
+    " "                     {}
+    .                       {throw new Error("An unexpected symbol has been encountered : '"+yytext()+"'. At line "+yyline+" and column "+yycolumn+".");}
     {LineTerminator}		{}
 }
 

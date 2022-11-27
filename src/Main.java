@@ -12,15 +12,20 @@ public class Main{
             Reader fileInputStream = new FileReader( args[0] );
             Lexer lexer = new Lexer(fileInputStream);
             lexer.yylex();
-            System.out.println(lexer.getTokens().size());
-            System.out.println(lexer.getTokens().get(lexer.getTokens().size()-1));
-
-            Parser parser = new Parser(lexer.getTokens(), lexer.getVariables());
-            parser.program();
+            
+            Parser parser = new Parser(lexer.getTokens());
+            parser.parse();
+            System.out.println(args[1].equals("-wt"));
+            if(args.length > 2 && args[1].equals("-wt")){
+                ParseTree pt = parser.getParseTree();
+                TexHandler.createTreeTex(args[2], pt.toLaTeX());
+            }
         }catch(Exception e){
-            System.err.println( "Exception in Main " + e.toString() );
+            System.err.println( "Exception in parsing :" + e.toString() );
+            e.printStackTrace();
+        }catch(Error e){
+            System.err.println( "Exception in lexing :" + e.toString() );
             e.printStackTrace();
         }
     }
-
 }

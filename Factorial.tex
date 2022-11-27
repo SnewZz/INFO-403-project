@@ -1,0 +1,14 @@
+\documentclass[border=5pt]{standalone}
+
+\usepackage{tikz}
+\usepackage{forest}
+
+\begin{document}
+
+\begin{forest}for tree={rectangle, draw, l sep=20pt}[{<Program>} [{BEGIN} ][{Factorial} ][{<Code>} [{<Instruction>} [{<Read>} [{READ} ][{(} ][{number} ][{)} ]]][{,} ][{<Code>} [{<Instruction>} [{<Assign>} [{result} ][{:=} ][{<ExprArith>} [{<MulDiv'>} [{<Atom>} [{1} ]][{<MulDiv'>} [{\epsilon} ]]][{<ExprArith'>} [{\epsilon} ]]]]][{,} ][{<Code>} [{<Instruction>} [{<If>} [{IF} ][{(} ][{<Cond>} [{<ExprArith>} [{<MulDiv'>} [{<Atom>} [{number} ]][{<MulDiv'>} [{\epsilon} ]]][{<ExprArith'>} [{\epsilon} ]]][{<Comp>} [{>} ]][{<ExprArith>} [{<MulDiv'>} [{<Atom>} [{-} ][{<Atom>} [{1} ]]][{<MulDiv'>} [{\epsilon} ]]][{<ExprArith'>} [{\epsilon} ]]]][{)} ][{THEN} ][{<Code>} [{<Instruction>} [{<While>} [{WHILE} ][{(} ][{<Cond>} [{<ExprArith>} [{<MulDiv'>} [{<Atom>} [{number} ]][{<MulDiv'>} [{\epsilon} ]]][{<ExprArith'>} [{\epsilon} ]]][{<Comp>} [{>} ]][{<ExprArith>} [{<MulDiv'>} [{<Atom>} [{0} ]][{<MulDiv'>} [{\epsilon} ]]][{<ExprArith'>} [{\epsilon} ]]]][{)} ][{DO} ][{<Code>} [{<Instruction>} [{<Assign>} [{result} ][{:=} ][{<ExprArith>} [{<MulDiv'>} [{<Atom>} [{result} ]][{<MulDiv'>} [{*} ][{<Atom>} [{number} ]][{<MulDiv'>} [{\epsilon} ]]]][{<ExprArith'>} [{\epsilon} ]]]]][{,} ][{<Code>} [{<Instruction>} [{<Assign>} [{number} ][{:=} ][{<ExprArith>} [{<MulDiv'>} [{<Atom>} [{number} ]][{<MulDiv'>} [{\epsilon} ]]][{ExprArith'} [{-} ][{<MulDiv'>} [{<Atom>} [{1} ]][{<MulDiv'>} [{\epsilon} ]]][{<ExprArith'>} [{\epsilon} ]]]]]][{,} ][{<Code>} [{\epsilon} ]]]][{END} ]]][{,} ][{<Code>} [{\epsilon} ]]][{<IfSeq>} [{ELSE} ][{<Code>} [{<Instruction>} [{<Assign>} [{result} ][{:=} ][{<ExprArith>} [{<MulDiv'>} [{<Atom>} [{-} ][{<Atom>} [{1} ]]][{<MulDiv'>} [{\epsilon} ]]][{<ExprArith'>} [{\epsilon} ]]]]][{,} ][{<Code>} [{\epsilon} ]]][{END} ]]]][{,} ][{<Code>} [{<Instruction>} [{<Print>} [{PRINT} ][{(} ][{result} ][{)} ]]][{,} ][{<Code>} [{\epsilon} ]]]]]][{END} ]];
+\end{forest}
+
+\end{document}
+%% Local Variables:
+%% TeX-engine: pdflatex
+%% End:
