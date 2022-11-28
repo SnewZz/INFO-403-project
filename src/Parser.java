@@ -31,7 +31,8 @@ public class Parser {
     }
 
     /**
-     * This method returns the next token to handle.
+     * This method returns the next token to handle. If the list of tokens is empty,
+     * it returns a null.
      * 
      * @return the next token.
      */
@@ -58,7 +59,6 @@ public class Parser {
     ParseTree match(LexicalUnit lu) throws Exception {
         Symbol s = null;
         if (lu == tokens.get(0).getType()) {
-            // System.out.println("Matched " + tokens.get(0).getType());
             s = new Symbol(lu, tokens.get(0).getValue().toString());
             tokens.remove(0);
         } else {
@@ -113,20 +113,26 @@ public class Parser {
     }
 
     /**
-     * This method starts the parsing and print the left-most derivation if the parsing did not meet any syntax error.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * This method starts the parsing and print the left-most derivation if the
+     * parsing did not meet any syntax error.
+     * 
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     void parse() throws Exception {
         this.parseTree = program();
         match(LexicalUnit.EOS);
         System.out.println(getLeftMostDerivation());
-        // System.out.println("Program is syntactically correct!");
     }
 
     /**
-     * This method handles the parsing of the rules comming from <Program> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <Program> as
+     * left-hand side. This method throws an exception if it meet an unexpected
+     * lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree program() throws Exception {
         leftMostDerivationArray.add(1);
@@ -140,9 +146,12 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <Code> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <Code> as left-hand
+     * side. This method throws an exception if it meet an unexpected lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree code() throws Exception {
         Symbol tok = next_token();
@@ -163,9 +172,13 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <Instruction> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <Instruction> as
+     * left-hand side. This method throws an exception if it meet an unexpected
+     * lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree instruction() throws Exception {
         Symbol tok = next_token();
@@ -199,9 +212,13 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <Assign> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <Assign> as
+     * left-hand side. This method throws an exception if it meet an unexpected
+     * lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree assign() throws Exception {
         leftMostDerivationArray.add(9);
@@ -212,9 +229,13 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <ExprArith> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <ExprArith> as
+     * left-hand side. This method throws an exception if it meet an unexpected
+     * lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree exprArith() throws Exception {
         leftMostDerivationArray.add(10);
@@ -224,9 +245,13 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <ExprArith'> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <ExprArith'> as
+     * left-hand side. This method throws an exception if it meet an unexpected
+     * lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree exprArithQuote() throws Exception {
         Symbol tok = next_token();
@@ -259,9 +284,13 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <MulDiv> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <MulDiv> as
+     * left-hand side. This method throws an exception if it meet an unexpected
+     * lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree mulDiv() throws Exception {
         leftMostDerivationArray.add(14);
@@ -271,9 +300,13 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <MulDiv'> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <MulDiv'> as
+     * left-hand side. This method throws an exception if it meet an unexpected
+     * lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree mulDivQuote() throws Exception {
         Symbol tok = next_token();
@@ -309,9 +342,12 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <Atom> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <Atom> as left-hand
+     * side. This method throws an exception if it meet an unexpected lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree atom() throws Exception {
         Symbol tok = next_token();
@@ -354,9 +390,12 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <If> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <If> as left-hand
+     * side. This method throws an exception if it meet an unexpected lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree if_() throws Exception {
         leftMostDerivationArray.add(22);
@@ -371,9 +410,13 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <ifSeq> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <ifSeq> as
+     * left-hand side. This method throws an exception if it meet an unexpected
+     * lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree ifSeq() throws Exception {
         Symbol tok = next_token();
@@ -404,9 +447,12 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <Cond> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <Cond> as left-hand
+     * side. This method throws an exception if it meet an unexpected lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree cond() throws Exception {
         leftMostDerivationArray.add(25);
@@ -417,9 +463,12 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <Comp> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <Comp> as left-hand
+     * side. This method throws an exception if it meet an unexpected lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree comp() throws Exception {
         Symbol tok = next_token();
@@ -445,9 +494,13 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <While> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <While> as
+     * left-hand side. This method throws an exception if it meet an unexpected
+     * lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree while_() throws Exception {
         leftMostDerivationArray.add(29);
@@ -463,9 +516,13 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <Print> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <Print> as
+     * left-hand side. This method throws an exception if it meet an unexpected
+     * lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree print() throws Exception {
         leftMostDerivationArray.add(30);
@@ -477,9 +534,12 @@ public class Parser {
     }
 
     /**
-     * This method handles the parsing of the rules comming from <Read> as left-hand side. This method throws an exception if it meet an unexpected lexical unit.
+     * This method handles the parsing of the rules comming from <Read> as left-hand
+     * side. This method throws an exception if it meet an unexpected lexical unit.
+     * 
      * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond to what the parser was expecting.
+     * @throws Exception Throws an exception if the lexical unit do not correspond
+     *                   to what the parser was expecting.
      */
     ParseTree read() throws Exception {
         leftMostDerivationArray.add(31);
