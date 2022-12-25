@@ -30,18 +30,16 @@ public class TreeSimplifier {
 
     ParseTree code(ParseTree t) throws Exception {
 
-        ArrayList list = new ArrayList<ParseTree>();
+        ArrayList<ParseTree> list = new ArrayList<>();
         ParseTree pt1 = instruction(t.getChildren().get(0));
         list.add(pt1);
 
-        while (t.getChildren().size() > 1) {
+        while (t.getChildren().get(2).getChildren().size() > 1) {
             t = t.getChildren().get(2);
 
             System.out.println(t.getLabel().getValue());
-            if(t.getChildren().size() > 1){
-                ParseTree codeFollow = instruction(t.getChildren().get(0));
-                list.add(codeFollow);
-            }
+            ParseTree codeFollow = instruction(t.getChildren().get(0));
+            list.add(codeFollow);
         }
         return new ParseTree(new Symbol(LexicalUnit.CODE_, "<Code>"),list);
     }
