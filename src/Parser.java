@@ -280,7 +280,7 @@ public class Parser {
         }
         ParseTree pt2 = mulDiv();
         ParseTree pt3 = exprArithQuote();
-        return new ParseTree(new Symbol(LexicalUnit.EXPRARITHQUOTE_, "ExprArith'"), Arrays.asList(pt1, pt2, pt3));
+        return new ParseTree(new Symbol(LexicalUnit.EXPRARITHQUOTE_, "<ExprArith'>"), Arrays.asList(pt1, pt2, pt3));
     }
 
     /**
@@ -296,7 +296,7 @@ public class Parser {
         leftMostDerivationArray.add(14);
         ParseTree pt1 = atom();
         ParseTree pt2 = mulDivQuote();
-        return new ParseTree(new Symbol(LexicalUnit.MULDIV_, "<MulDiv'>"), Arrays.asList(pt1, pt2));
+        return new ParseTree(new Symbol(LexicalUnit.MULDIV_, "<MulDiv>"), Arrays.asList(pt1, pt2));
     }
 
     /**
