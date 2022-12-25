@@ -459,7 +459,7 @@ public class Parser {
         ParseTree pt1 = exprArith();
         ParseTree pt2 = comp();
         ParseTree pt3 = exprArith();
-        return new ParseTree(new Symbol(LexicalUnit.IFSEQ_, "<Cond>"), Arrays.asList(pt1, pt2, pt3));
+        return new ParseTree(new Symbol(LexicalUnit.COND_, "<Cond>"), Arrays.asList(pt1, pt2, pt3));
     }
 
     /**
@@ -490,7 +490,7 @@ public class Parser {
                 syntax_error(Arrays.asList(LexicalUnit.EQUAL, LexicalUnit.SMALLER,
                         LexicalUnit.GREATER));
         }
-        return new ParseTree(new Symbol(LexicalUnit.IFSEQ_, "<Comp>"), Arrays.asList(pt1));
+        return new ParseTree(new Symbol(LexicalUnit.COMP_, "<Comp>"), Arrays.asList(pt1));
     }
 
     /**
