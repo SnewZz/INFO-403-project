@@ -69,7 +69,6 @@ public class TreeSimplifier {
                 break;
             default:
         }
-        // return new ParseTree(new Symbol(LexicalUnit.INSTRUCTION_, "<Instruction>"));
         return pt;
     }
 
@@ -153,71 +152,40 @@ public class TreeSimplifier {
         }
     }
 
-    /**
-     * This method handles the parsing of the rules comming from <If> as left-hand
-     * side. This method throws an exception if it meet an unexpected lexical unit.
-     * 
-     * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond
-     *                   to what the parser was expecting.
-     */
     ParseTree if_(ParseTree t) throws Exception {
         ParseTree ifSeq = t.getChild(6);
-        /*
-         * if(ifSeq.getChild(1).getChildren().size() == 1){
-         * 
-         * }
-         */
-        return t;
+        if(ifSeq.getChildren().size() == 1){
+            ParseTree cond = cond(t.getChild(2));
+            ParseTree then = code(t.getChild(5));
+            return new ParseTree(new Symbol(LexicalUnit.IF_, "<If>"), Arrays.asList(cond, then));
+        }else{
+            ParseTree cond = cond(t.getChild(2));
+            ParseTree then = code(t.getChild(5));
+            ParseTree else_ = code(ifSeq.getChild(1));
+            return new ParseTree(new Symbol(LexicalUnit.IF_, "<If>"), Arrays.asList(cond, then, else_));
+        }
     }
 
-    /**
-     * This method handles the parsing of the rules comming from <While> as
-     * left-hand side. This method throws an exception if it meet an unexpected
-     * lexical unit.
-     * 
-     * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond
-     *                   to what the parser was expecting.
-     */
+    private ParseTree cond(ParseTree t) throws Exception {
+        ParseTree expL = exprArith(t.getChild(0));
+        ParseTree op = t.getChild(1).getChild(0);
+        ParseTree expR = exprArith(t.getChild(2));
+        return new ParseTree(new Symbol(op.getLabel().getType(), op.getLabel().getValue()),
+                Arrays.asList(expL, expR));
+    }
+
+
     ParseTree while_(ParseTree t) throws Exception {
-        /*
-         * leftMostDerivationArray.add(29);
-         * ParseTree pt1 = match(LexicalUnit.WHILE);
-         * ParseTree pt2 = match(LexicalUnit.LPAREN);
-         * ParseTree pt3 = cond();
-         * ParseTree pt4 = match(LexicalUnit.RPAREN);
-         * ParseTree pt5 = match(LexicalUnit.DO);
-         * ParseTree pt6 = code();
-         * ParseTree pt7 = match(LexicalUnit.END);
-         * return new ParseTree(new Symbol(LexicalUnit.WHILE_, "<While>"),
-         * Arrays.asList(pt1, pt2, pt3, pt4, pt5, pt6, pt7));
-         */
-        return t;
+        ParseTree cond = cond(t.getChild(2));
+        ParseTree then = code(t.getChild(5));
+        return new ParseTree(new Symbol(LexicalUnit.WHILE_, "<While>"), Arrays.asList(cond, then));
     }
 
-    /**
-     * This method handles the parsing of the rules comming from <Print> as
-     * left-hand side. This method throws an exception if it meet an unexpected
-     * lexical unit.
-     * 
-     * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond
-     *                   to what the parser was expecting.
-     */
     ParseTree print(ParseTree t) throws Exception {
         ParseTree pt = t.getChild(2);
         return new ParseTree(new Symbol(LexicalUnit.PRINT_, "<Print>"), Arrays.asList(pt));
     }
 
-    /**
-     * This method handles the parsing of the rules comming from <Read> as left-hand
-     * side. This method throws an exception if it meet an unexpected lexical unit.
-     * 
-     * @return The parse tree at the corresponding level of this rule.
-     * @throws Exception Throws an exception if the lexical unit do not correspond
-     *                   to what the parser was expecting.
-     */
     ParseTree read(ParseTree t) throws Exception {
         ParseTree pt = t.getChild(2);
         return new ParseTree(new Symbol(LexicalUnit.READ_, "<Read>"), Arrays.asList(pt));
