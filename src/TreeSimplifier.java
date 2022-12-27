@@ -163,7 +163,7 @@ public class TreeSimplifier {
         ParseTree pt6 = code();
         ParseTree pt7 = ifSeq();
         return new ParseTree(new Symbol(LexicalUnit.IF_, "<If>"), Arrays.asList(pt1, pt2, pt3, pt4, pt5, pt6, pt7));*/
-        return null;
+        return t;
     }
 
     
@@ -190,7 +190,7 @@ public class TreeSimplifier {
         ParseTree pt7 = match(LexicalUnit.END);
         return new ParseTree(new Symbol(LexicalUnit.WHILE_, "<While>"),
                 Arrays.asList(pt1, pt2, pt3, pt4, pt5, pt6, pt7));*/
-        return null;
+        return t;
     }
 
     /**
@@ -203,13 +203,8 @@ public class TreeSimplifier {
      *                   to what the parser was expecting.
      */
     ParseTree print(ParseTree t) throws Exception {
-        /*leftMostDerivationArray.add(30);
-        ParseTree pt1 = match(LexicalUnit.PRINT);
-        ParseTree pt2 = match(LexicalUnit.LPAREN);
-        ParseTree pt3 = match(LexicalUnit.VARNAME);
-        ParseTree pt4 = match(LexicalUnit.RPAREN);
-        return new ParseTree(new Symbol(LexicalUnit.PRINT_, "<Print>"), Arrays.asList(pt1, pt2, pt3, pt4));*/
-        return null;
+        ParseTree pt = t.getChild(2);
+        return new ParseTree(new Symbol(LexicalUnit.PRINT_, "<Print>"), Arrays.asList(pt));
     }
 
     /**
@@ -221,13 +216,8 @@ public class TreeSimplifier {
      *                   to what the parser was expecting.
      */
     ParseTree read(ParseTree t) throws Exception {
-        /*leftMostDerivationArray.add(31);
-        ParseTree pt1 = match(LexicalUnit.READ);
-        ParseTree pt2 = match(LexicalUnit.LPAREN);
-        ParseTree pt3 = match(LexicalUnit.VARNAME);
-        ParseTree pt4 = match(LexicalUnit.RPAREN);
-        return new ParseTree(new Symbol(LexicalUnit.PRINT_, "<Read>"), Arrays.asList(pt1, pt2, pt3, pt4));*/
-        return null;
+        ParseTree pt = t.getChild(2);
+        return new ParseTree(new Symbol(LexicalUnit.READ_, "<Read>"), Arrays.asList(pt));
     }
 
 
