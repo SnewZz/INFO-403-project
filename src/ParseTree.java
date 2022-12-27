@@ -46,6 +46,10 @@ public class ParseTree {
         return children;
     }
 
+    public ParseTree getChild(int i) {
+        return children.get(i);
+    }
+
     public void setChildren(List<ParseTree> children) {
         this.children = children;
     }
