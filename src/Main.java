@@ -16,15 +16,26 @@ public class Main {
             if (args.length == 0) {
                 throw new IllegalArgumentException("At least one argument needed!");
             }
+
             Reader fileInputStream = new FileReader(args[0]);
+
             Lexer lexer = new Lexer(fileInputStream);
             lexer.yylex();
 
             Parser parser = new Parser(lexer.getTokens());
             parser.parse();
+
+            TreeSimplifier treeSimplifier = new TreeSimplifier(parser.getParseTree());
+            treeSimplifier.simplify();
+
             if (args.length > 2 && args[1].equals("-wt")) {
                 ParseTree pt = parser.getParseTree();
                 TexHandler.createTreeTex(args[2], pt.toLaTeX());
+            }
+
+            if (args.length > 2 && args[1].equals("-wt")) {
+                ParseTree npt = treeSimplifier.getNewTree();
+                TexHandler.createTreeTex("simple_"+args[2], npt.toLaTeX());
             }
         } catch (Exception e) {
             System.err.println("Exception in parsing :" + e.toString());

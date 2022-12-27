@@ -1,0 +1,14 @@
+\documentclass[border=5pt]{standalone}
+
+\usepackage{tikz}
+\usepackage{forest}
+
+\begin{document}
+
+\begin{forest}for tree={rectangle, draw, l sep=20pt}[{\texttt{<Program>}} [{\texttt{BEGIN}} ][{\texttt{Factorial}} ][{\texttt{<Code>}} [{\texttt{<Assign>}} [{\texttt{assign}} ][{\texttt{1}} ]][{\texttt{<If>}} [{\texttt{>}} [{\texttt{a}} ][{\texttt{b}} ]][{\texttt{<Code>}} ]][{\texttt{<While>}} [{\texttt{>}} [{\texttt{a}} ][{\texttt{b}} ]][{\texttt{<Code>}} ]][{\texttt{<Print>}} [{\texttt{a}} ]][{\texttt{<Print>}} [{\texttt{a}} ]]][{\texttt{END}} ]];
+\end{forest}
+
+\end{document}
+%% Local Variables:
+%% TeX-engine: pdflatex
+%% End:
