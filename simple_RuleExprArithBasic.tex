@@ -1,0 +1,14 @@
+\documentclass[border=5pt]{standalone}
+
+\usepackage{tikz}
+\usepackage{forest}
+
+\begin{document}
+
+\begin{forest}for tree={rectangle, draw, l sep=20pt}[{\texttt{<Program>}} [{\texttt{BEGIN}} ][{\texttt{Factorial}} ][{\texttt{<Code>}} [{\texttt{<Assign>}} [{\texttt{exparith}} ][{\texttt{1}} ]][{\texttt{<Assign>}} [{\texttt{exparith1}} ][{\texttt{var}} ]][{\texttt{<Assign>}} [{\texttt{exparith2}} ][{\texttt{+}} [{\texttt{1}} ][{\texttt{2}} ]]][{\texttt{<Assign>}} [{\texttt{exparith3}} ][{\texttt{-}} [{\texttt{1}} ][{\texttt{2}} ]]][{\texttt{<Assign>}} [{\texttt{exparith4}} ][{\texttt{*}} [{\texttt{1}} ][{\texttt{2}} ]]][{\texttt{<Assign>}} [{\texttt{exparith5}} ][{\texttt{/}} [{\texttt{1}} ][{\texttt{2}} ]]][{\texttt{<Assign>}} [{\texttt{exparith2}} ][{\texttt{+}} [{\texttt{1}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith3}} ][{\texttt{-}} [{\texttt{1}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith4}} ][{\texttt{*}} [{\texttt{1}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith5}} ][{\texttt{/}} [{\texttt{1}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith2}} ][{\texttt{+}} [{\texttt{var}} ][{\texttt{2}} ]]][{\texttt{<Assign>}} [{\texttt{exparith3}} ][{\texttt{-}} [{\texttt{var}} ][{\texttt{2}} ]]][{\texttt{<Assign>}} [{\texttt{exparith4}} ][{\texttt{*}} [{\texttt{var}} ][{\texttt{2}} ]]][{\texttt{<Assign>}} [{\texttt{exparith5}} ][{\texttt{/}} [{\texttt{var}} ][{\texttt{2}} ]]][{\texttt{<Assign>}} [{\texttt{exparith2}} ][{\texttt{+}} [{\texttt{var}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith3}} ][{\texttt{-}} [{\texttt{var}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith4}} ][{\texttt{*}} [{\texttt{var}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith5}} ][{\texttt{/}} [{\texttt{var}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith2}} ][{\texttt{+}} [{\texttt{var}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith3}} ][{\texttt{-}} [{\texttt{var}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith4}} ][{\texttt{*}} [{\texttt{var}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith5}} ][{\texttt{/}} [{\texttt{var}} ][{\texttt{var}} ]]][{\texttt{<Assign>}} [{\texttt{exparith2}} ][{\texttt{+}} [{\texttt{var}} ][{\texttt{+}} [{\texttt{var}} ][{\texttt{1}} ]]]][{\texttt{<Assign>}} [{\texttt{exparith3}} ][{\texttt{-}} [{\texttt{var}} ][{\texttt{-}} [{\texttt{var}} ][{\texttt{2}} ]]]][{\texttt{<Assign>}} [{\texttt{exparith4}} ][{\texttt{*}} [{\texttt{var}} ][{\texttt{*}} [{\texttt{var}} ][{\texttt{3}} ]]]][{\texttt{<Assign>}} [{\texttt{exparith5}} ][{\texttt{/}} [{\texttt{var}} ][{\texttt{/}} [{\texttt{var}} ][{\texttt{4}} ]]]]][{\texttt{END}} ]];
+\end{forest}
+
+\end{document}
+%% Local Variables:
+%% TeX-engine: pdflatex
+%% End:

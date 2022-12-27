@@ -10,7 +10,7 @@ testing:
 	java -jar dist/part3.jar test/Factorial.fs -wt Factorial.tex
 	java -jar dist/part3.jar test/RuleAssignAndAtom.fs -wt RuleAssignAndAtom.tex
 	java -jar dist/part3.jar test/RuleCode.fs -wt RuleCode.tex
-	java -jar dist/part3.jar test/RuleExprArithBasics.fs -wt RuleExprArithBasics.tex
+	java -jar dist/part3.jar test/RuleExprArithBasic.fs -wt RuleExprArithBasic.tex
 	java -jar dist/part3.jar test/RuleExprArithPriority.fs -wt RuleExprArithPriority.tex
 	java -jar dist/part3.jar test/RuleIf.fs -wt RuleIf.tex
 	java -jar dist/part3.jar test/RuleInstruction.fs -wt RuleInstruction.tex
