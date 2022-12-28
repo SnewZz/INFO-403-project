@@ -82,16 +82,18 @@ public class LLVMGenerator {
 
         ParseTree rightSubT = p.getChild(1);
         String valueC = new String();
-        String value = new String();
         
         if(rightSubT.getLabel().getType().equals(LexicalUnit.NUMBER)){
             valueC = rightSubT.getLabel().getValue().toString();
+        }else if(p.getChild(1).getLabel().getType().equals(LexicalUnit.VARNAME)){
+            
+            valueC = generateNewVariableName();
+            String var = "%"+p.getChild(1).getLabel().getValue().toString();
+            result += ";ALLLOOO++\n";
+            result += "\t"+valueC+" = load i32, i32* "+var+"\n";
         }else{
             valueC = generateNewVariableName();
-            value = generateNewVariableName();
-            result += "\t"+value+" = alloca i32\n";
-            result += "\t"+operationHandler(rightSubT, value);
-            result += "\t"+valueC+" = load i32, i32* "+value+"\n";
+            result += "\t"+operationHandler(rightSubT, valueC);
         }
 
         result += "\t"+"store i32 "+valueC+", i32* "+varName + "\n\n";
@@ -123,24 +125,9 @@ public class LLVMGenerator {
                 //DIVIDE
                 result += divide(p,target);
                 break;
-            case VARNAME:
-                //VARNAME
-                result += accessVarnameValue(p,target);
-                break;
             default:
                 break;
         }
-        return result;
-    }
-
-    private String accessVarnameValue(ParseTree p, String target){
-        String result = new String();
-        result += ";ACCESS VARNAME VALUE (" + target + " = " + p.getLabel().getValue().toString() + ") \n";
-
-        String varName = "%"+p.getLabel().getValue().toString();
-        String varValue = generateNewVariableName();
-        result += "\t"+varValue+" = load i32, i32* "+varName+"\n";
-        result += "\t"+"store i32 "+varValue+", i32* "+target+"\n";
         return result;
     }
 
@@ -148,34 +135,32 @@ public class LLVMGenerator {
         String result = new String();
         result += ";ADDITION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " + " + p.getChild(1).getLabel().getValue().toString() + ") \n";
 
-        String leftValue = new String();
-        String rightValue = new String();
         String leftValueC = new String();
         String rightValueC = new String();
-        String addResult = generateNewVariableName();
 
         if(p.getChild(0).getLabel().getType().equals(LexicalUnit.NUMBER)){
             leftValueC = p.getChild(0).getLabel().getValue().toString();
-        }else{
-            leftValue = generateNewVariableName();
+        }else if(p.getChild(0).getLabel().getType().equals(LexicalUnit.VARNAME)){
             leftValueC = generateNewVariableName();
-            result += "\t"+leftValue+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(0), leftValue);
-            result += "\t"+leftValueC+" = load i32, i32* "+leftValue+"\n";
+            String varName = "%"+p.getChild(0).getLabel().getValue().toString();
+            result += "\t"+leftValueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            leftValueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(0), leftValueC);
         }
 
         if(p.getChild(1).getLabel().getType().equals(LexicalUnit.NUMBER)){
             rightValueC = p.getChild(1).getLabel().getValue().toString();
-        }else{
-            rightValue = generateNewVariableName();
+        }else if(p.getChild(1).getLabel().getType().equals(LexicalUnit.VARNAME)){
             rightValueC = generateNewVariableName();
-            result += "\t"+rightValue+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(1), rightValue);
-            result += "\t"+rightValueC+" = load i32, i32* "+rightValue+"\n";
+            String varName = "%"+p.getChild(1).getLabel().getValue().toString();
+            result += "\t"+rightValueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            rightValueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(1), rightValueC);
         }
 
-        result += "\t"+addResult+" = add i32 "+leftValueC+", "+rightValueC+"\n";
-        result += "\t"+"store i32 "+addResult+", i32* "+target+"\n";
+        result += "\t"+target+" = add i32 "+leftValueC+", "+rightValueC+"\n";
         return result;
     }
 
@@ -183,34 +168,32 @@ public class LLVMGenerator {
         String result = new String();
         result += ";SUBSTRACTION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " - " + p.getChild(1).getLabel().getValue().toString() + ") \n";
 
-        String leftValue = new String();
-        String rightValue = new String();
         String leftValueC = new String();
         String rightValueC = new String();
-        String minusResult = generateNewVariableName();
 
         if(p.getChild(0).getLabel().getType().equals(LexicalUnit.NUMBER)){
             leftValueC = p.getChild(0).getLabel().getValue().toString();
-        }else{
-            leftValue = generateNewVariableName();
+        }else if(p.getChild(0).getLabel().getType().equals(LexicalUnit.VARNAME)){
             leftValueC = generateNewVariableName();
-            result += "\t"+leftValue+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(0), leftValue);
-            result += "\t"+leftValueC+" = load i32, i32* "+leftValue+"\n";
+            String varName = "%"+p.getChild(0).getLabel().getValue().toString();
+            result += "\t"+leftValueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            leftValueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(0), leftValueC);
         }
 
         if(p.getChild(1).getLabel().getType().equals(LexicalUnit.NUMBER)){
             rightValueC = p.getChild(1).getLabel().getValue().toString();
-        }else{
-            rightValue = generateNewVariableName();
+        }else if(p.getChild(1).getLabel().getType().equals(LexicalUnit.VARNAME)){
             rightValueC = generateNewVariableName();
-            result += "\t"+rightValue+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(1), rightValue);
-            result += "\t"+rightValueC+" = load i32, i32* "+rightValue+"\n";
+            String varName = "%"+p.getChild(1).getLabel().getValue().toString();
+            result += "\t"+rightValueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            rightValueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(1), rightValueC);
         }
 
-        result += "\t"+minusResult+" = sub i32 "+leftValueC+", "+rightValueC+"\n";
-        result += "\t"+"store i32 "+minusResult+", i32* "+target+"\n";
+        result += "\t"+target+" = sub i32 "+leftValueC+", "+rightValueC+"\n";
         return result;
     }
 
@@ -218,22 +201,20 @@ public class LLVMGenerator {
         String result = new String();
         result += ";UNARY SUBSTRACTION (" + target + " = -" + p.getChild(0).getLabel().getValue().toString() + ") \n";
 
-        String value = new String();
         String valueC = new String();
-        String minusResult = generateNewVariableName();
 
         if(p.getChild(0).getLabel().getType().equals(LexicalUnit.NUMBER)){
             valueC = p.getChild(0).getLabel().getValue().toString();
-        }else{
-            value = generateNewVariableName();
+        }else if(p.getChild(0).getLabel().getType().equals(LexicalUnit.VARNAME)){
             valueC = generateNewVariableName();
-            result += "\t"+value+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(0), value);
-            result += "\t"+valueC+" = load i32, i32* "+value+"\n";
+            String varName = "%"+p.getChild(0).getLabel().getValue().toString();
+            result += "\t"+valueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            valueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(0), valueC);
         }
 
-        result += "\t"+minusResult+" = sub i32 0, "+valueC+"\n";
-        result += "\t"+"store i32 "+minusResult+", i32* "+target+"\n";
+        result += "\t"+target+" = sub i32 0, "+valueC+"\n";
         return result;
     }
 
@@ -241,34 +222,32 @@ public class LLVMGenerator {
         String result = new String();
         result += ";DIVISION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " / " + p.getChild(1).getLabel().getValue().toString() + ") \n";
 
-        String leftValue = new String();
-        String rightValue = new String();
         String leftValueC = new String();
         String rightValueC = new String();
-        String divResult = generateNewVariableName();
 
         if(p.getChild(0).getLabel().getType().equals(LexicalUnit.NUMBER)){
             leftValueC = p.getChild(0).getLabel().getValue().toString();
-        }else{
-            leftValue = generateNewVariableName();
+        }else if(p.getChild(0).getLabel().getType().equals(LexicalUnit.VARNAME)){
             leftValueC = generateNewVariableName();
-            result += "\t"+leftValue+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(0), leftValue);
-            result += "\t"+leftValueC+" = load i32, i32* "+leftValue+"\n";
+            String varName = "%"+p.getChild(0).getLabel().getValue().toString();
+            result += "\t"+leftValueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            leftValueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(0), leftValueC);
         }
 
         if(p.getChild(1).getLabel().getType().equals(LexicalUnit.NUMBER)){
             rightValueC = p.getChild(1).getLabel().getValue().toString();
-        }else{
-            rightValue = generateNewVariableName();
+        }else if(p.getChild(1).getLabel().getType().equals(LexicalUnit.VARNAME)){
             rightValueC = generateNewVariableName();
-            result += "\t"+rightValue+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(1), rightValue);
-            result += "\t"+rightValueC+" = load i32, i32* "+rightValue+"\n";
+            String varName = "%"+p.getChild(1).getLabel().getValue().toString();
+            result += "\t"+rightValueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            rightValueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(1), rightValueC);
         }
 
-        result += "\t"+divResult+" = sdiv i32 "+leftValueC+", "+rightValueC+"\n";
-        result += "\t"+"store i32 "+divResult+", i32* "+target+"\n";
+        result += "\t"+target+" = sdiv i32 "+leftValueC+", "+rightValueC+"\n";
         return result;
     }
 
@@ -276,34 +255,32 @@ public class LLVMGenerator {
         String result = new String();
         result += ";MULTIPLICATION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " * " + p.getChild(1).getLabel().getValue().toString() + ") \n";
 
-        String leftValue = new String();
-        String rightValue = new String();
         String leftValueC = new String();
         String rightValueC = new String();
-        String mulResult = generateNewVariableName();
 
         if(p.getChild(0).getLabel().getType().equals(LexicalUnit.NUMBER)){
             leftValueC = p.getChild(0).getLabel().getValue().toString();
-        }else{
-            leftValue = generateNewVariableName();
+        }else if(p.getChild(0).getLabel().getType().equals(LexicalUnit.VARNAME)){
             leftValueC = generateNewVariableName();
-            result += "\t"+leftValue+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(0), leftValue);
-            result += "\t"+leftValueC+" = load i32, i32* "+leftValue+"\n";
+            String varName = "%"+p.getChild(0).getLabel().getValue().toString();
+            result += "\t"+leftValueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            leftValueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(0), leftValueC);
         }
 
         if(p.getChild(1).getLabel().getType().equals(LexicalUnit.NUMBER)){
             rightValueC = p.getChild(1).getLabel().getValue().toString();
-        }else{
-            rightValue = generateNewVariableName();
+        }else if(p.getChild(1).getLabel().getType().equals(LexicalUnit.VARNAME)){
             rightValueC = generateNewVariableName();
-            result += "\t"+rightValue+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(1), rightValue);
-            result += "\t"+rightValueC+" = load i32, i32* "+rightValue+"\n";
+            String varName = "%"+p.getChild(1).getLabel().getValue().toString();
+            result += "\t"+rightValueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            rightValueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(1), rightValueC);
         }
 
-        result += "\t"+mulResult+" = mul i32 "+leftValueC+", "+rightValueC+"\n";
-        result += "\t"+"store i32 "+mulResult+", i32* "+target+"\n";
+        result += "\t"+target+" = mul i32 "+leftValueC+", "+rightValueC+"\n";
         return result;
     }
 
@@ -345,29 +322,29 @@ public class LLVMGenerator {
         String result = new String();
         result += ";CONDITION (" + target + " = node(" + p.getChild(0).getLabel().getValue().toString() + ") " + p.getLabel().getValue().toString() + " node(" + p.getChild(1).getLabel().getValue().toString() + ")) \n";
 
-        String leftValue = new String();
-        String rightValue = new String();
         String leftValueC = new String();
         String rightValueC = new String();
 
         if(p.getChild(0).getLabel().getType().equals(LexicalUnit.NUMBER)){
             leftValueC = p.getChild(0).getLabel().getValue().toString();
-        }else{
-            leftValue = generateNewVariableName();
+        }else if(p.getChild(0).getLabel().getType().equals(LexicalUnit.VARNAME)){
             leftValueC = generateNewVariableName();
-            result += "\t"+leftValue+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(0), leftValue);
-            result += "\t"+leftValueC+" = load i32, i32* "+leftValue+"\n";
+            String varName = "%"+p.getChild(0).getLabel().getValue().toString();
+            result += "\t"+leftValueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            leftValueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(0), leftValueC);
         }
 
         if(p.getChild(1).getLabel().getType().equals(LexicalUnit.NUMBER)){
             rightValueC = p.getChild(1).getLabel().getValue().toString();
-        }else{
-            rightValue = generateNewVariableName();
+        }else if(p.getChild(1).getLabel().getType().equals(LexicalUnit.VARNAME)){
             rightValueC = generateNewVariableName();
-            result += "\t"+rightValue+" = alloca i32\n";
-            result += "\t"+operationHandler(p.getChild(1), rightValue);
-            result += "\t"+rightValueC+" = load i32, i32* "+rightValue+"\n";
+            String varName = "%"+p.getChild(1).getLabel().getValue().toString();
+            result += "\t"+rightValueC+" = load i32, i32* "+varName+"\n";
+        }else{
+            rightValueC = generateNewVariableName();
+            result += "\t"+operationHandler(p.getChild(1), rightValueC);
         }
 
         if(p.getLabel().getType().equals(LexicalUnit.EQUAL)){

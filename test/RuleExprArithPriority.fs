@@ -1,5 +1,6 @@
 BEGIN Factorial
 
+var := 1,
 exparithrnd0 := 1,
 exparithrnd1 := 1 + 2 * 3,
 exparithrnd2 := 1 + 2 * 3 + var,
