@@ -89,7 +89,6 @@ public class LLVMGenerator {
             
             valueC = generateNewVariableName();
             String var = "%"+p.getChild(1).getLabel().getValue().toString();
-            result += ";ALLLOOO++\n";
             result += "\t"+valueC+" = load i32, i32* "+var+"\n";
         }else{
             valueC = generateNewVariableName();
