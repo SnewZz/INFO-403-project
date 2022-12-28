@@ -7,12 +7,14 @@ public class LLVMGenerator {
     private ArrayList<String> variablesName; 
     private int generateNewVariableNameCounter;
     private int ifCounter;
+    private int whileCounter;
 
     public LLVMGenerator(ParseTree pt){
         this.pt = pt;
         this.result = new String();
         this.generateNewVariableNameCounter = 0;
         this.ifCounter = 0;
+        this.whileCounter = 0;
         this.variablesName = new ArrayList<String>();
     }
 
@@ -42,7 +44,7 @@ public class LLVMGenerator {
                     result += if_(child);
                     break;
                 case WHILE_:
-                    result += "\nTODO WHILE\n";
+                    result += while_(child);
                     break;
                 case PRINT_:
                     result += "\nTODO PRINT\n";
@@ -281,13 +283,13 @@ public class LLVMGenerator {
 
         result += ";THEN \n";
 
-        result += "    "+"if"+ifCounter+"true:\n";
+        result += "    "+"if"+ifCounter+"true:\n\n";
         result += code(p.getChild(1));
         result += "\t"+"br label %if"+ifCounter+"end\n";
 
         if(p.getChildren().size() == 3){
             result += ";ELSE \n";
-            result += "    "+"if"+ifCounter+"false:\n";
+            result += "    "+"if"+ifCounter+"false:\n\n";
             result += code(p.getChild(2));
             result += "\t"+"br label %if"+ifCounter+"end\n";
         }
@@ -333,6 +335,31 @@ public class LLVMGenerator {
 
         
         result += "\t"+"store i32 "+condResult+", i32* "+target+"\n";
+        return result;
+    }
+
+    private String while_(ParseTree p){
+        String result = new String();
+        result += ";WHILE \n";
+        result += ";--------------------------------------------\n";
+        result += "\t"+"br label %while"+whileCounter+"\n";
+        result += "    "+"while"+whileCounter+":\n";
+
+        String condResult = generateNewVariableName();
+        result += cond(p.getChild(0), condResult);
+
+        result += "\t"+"br i1 "+condResult+", label %while"+whileCounter+"true, label %while"+whileCounter+"end\n";
+
+        result += ";THEN \n";
+
+        result += "    "+"while"+whileCounter+"true:\n\n";
+        result += code(p.getChild(1));
+        result += "\t"+"br label %while"+whileCounter+"\n";
+
+        result += ";END \n";
+        result += "    "+"while"+whileCounter+"end:\n\n";
+
+        whileCounter++;
         return result;
     }
 
