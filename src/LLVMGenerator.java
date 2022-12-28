@@ -76,7 +76,6 @@ public class LLVMGenerator {
         // create variable if not exist
         if(!this.variablesName.contains(varName)){
             this.variablesName.add(varName);
-            result += ";TODO PATCH DOUBLE DELCARATION TEEEEEEEEEEEEEEEST\n";
             result += "\t"+varName+" = alloca i32\n";
         }
 
@@ -404,7 +403,12 @@ public class LLVMGenerator {
         result += ";--------------------------------------------\n";
 
         String readed = generateNewVariableName();
-        result += "\t"+ toStore +" = alloca i32\n";
+
+        if(!this.variablesName.contains(toStore)){
+            this.variablesName.add(toStore);
+            result += "\t"+ toStore +" = alloca i32\n";
+        }
+
         result += "\t"+ readed +" = call i32 @readInt()\n";
         result += "\t"+"store i32 "+ readed +", i32* "+toStore+"\n";
         return result;
