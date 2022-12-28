@@ -37,6 +37,13 @@ public class Main {
                 ParseTree npt = treeSimplifier.getNewTree();
                 TexHandler.createTreeTex("simple_"+args[2], npt.toLaTeX());
             }
+
+            LLVMGenerator llvmGenerator = new LLVMGenerator(treeSimplifier.getNewTree());
+            llvmGenerator.generateCorrespondingLLVM();
+            String llvmCode = llvmGenerator.getResult();
+
+            System.out.println(llvmCode);
+
         } catch (Exception e) {
             System.err.println("Exception in parsing :" + e.toString());
             e.printStackTrace();
