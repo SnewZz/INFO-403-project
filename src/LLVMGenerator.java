@@ -28,6 +28,13 @@ public class LLVMGenerator {
     
     public void generateCorrespondingLLVM(){
         this.result += "; This is the code corresponding to the "+this.pt.getChild(1).getLabel().getValue()+" program.\n";
+        this.result += ";--------------------------------------------\n";
+        this.result += ";First, we define read and print functions\n\n";
+        this.result += generateReadFunction();
+        this.result += generatePrintFunction();
+        this.result += ";--------------------------------------------\n";
+        this.result += ";Then, we define the main function\n";
+        this.result += ";==============================================================================\n\n";
         this.result += "define i32 @main() {\n";
         this.result += code(pt.getChild(2));
         this.result += "}";
@@ -47,10 +54,10 @@ public class LLVMGenerator {
                     result += while_(child);
                     break;
                 case PRINT_:
-                    result += "\nTODO PRINT\n";
+                    result += print(child);
                     break;
                 case READ_:
-                    result += "\nTODO READ\n";
+                    result += read(child);
                     break;
                 default:
                     break;
@@ -61,7 +68,7 @@ public class LLVMGenerator {
 
     private String assign(ParseTree p){
         String result = new String();
-        result += ";ASSIGN "+p.getChild(0).getLabel().getValue()+" := node("+p.getChild(1).getLabel().getValue()+")\n";
+        result += ";ASSIGN ("+p.getChild(0).getLabel().getValue()+" := node("+p.getChild(1).getLabel().getValue()+"))\n";
         result += ";--------------------------------------------\n";
 
         String varName = "%"+p.getChild(0).getLabel().getValue().toString();
@@ -122,7 +129,7 @@ public class LLVMGenerator {
 
     private String accessVarnameValue(ParseTree p, String target){
         String result = new String();
-        result += ";ACCESS VARNAME VALUE " + target + " = " + p.getLabel().getValue().toString() + " \n";
+        result += ";ACCESS VARNAME VALUE (" + target + " = " + p.getLabel().getValue().toString() + ") \n";
 
         String varName = "%"+p.getLabel().getValue().toString();
         String varValue = generateNewVariableName();
@@ -133,7 +140,7 @@ public class LLVMGenerator {
 
     private String add(ParseTree p, String target){
         String result = new String();
-        result += ";ADDITION " + target + " = " + p.getChild(0).getLabel().getValue().toString() + " + " + p.getChild(1).getLabel().getValue().toString() + " \n";
+        result += ";ADDITION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " + " + p.getChild(1).getLabel().getValue().toString() + ") \n";
 
         String leftValue = new String();
         String rightValue = new String();
@@ -162,7 +169,7 @@ public class LLVMGenerator {
 
     private String minus(ParseTree p, String target){
         String result = new String();
-        result += ";SUBSTRACTION " + target + " = " + p.getChild(0).getLabel().getValue().toString() + " - " + p.getChild(1).getLabel().getValue().toString() + " \n";
+        result += ";SUBSTRACTION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " - " + p.getChild(1).getLabel().getValue().toString() + ") \n";
 
         String leftValue = new String();
         String rightValue = new String();
@@ -191,7 +198,7 @@ public class LLVMGenerator {
 
     private String minusUnary(ParseTree p, String target){
         String result = new String();
-        result += ";UNARY SUBSTRACTION " + target + " = -" + p.getChild(0).getLabel().getValue().toString() + " \n";
+        result += ";UNARY SUBSTRACTION (" + target + " = -" + p.getChild(0).getLabel().getValue().toString() + ") \n";
 
         String value = new String();
         String minusResult = generateNewVariableName();
@@ -211,7 +218,7 @@ public class LLVMGenerator {
 
     private String divide(ParseTree p, String target){
         String result = new String();
-        result += ";DIVISION " + target + " = " + p.getChild(0).getLabel().getValue().toString() + " / " + p.getChild(1).getLabel().getValue().toString() + " \n";
+        result += ";DIVISION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " / " + p.getChild(1).getLabel().getValue().toString() + ") \n";
 
         String leftValue = new String();
         String rightValue = new String();
@@ -240,7 +247,7 @@ public class LLVMGenerator {
 
     private String times(ParseTree p, String target){
         String result = new String();
-        result += ";MULTIPLICATION " + target + " = " + p.getChild(0).getLabel().getValue().toString() + " * " + p.getChild(1).getLabel().getValue().toString() + " \n";
+        result += ";MULTIPLICATION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " * " + p.getChild(1).getLabel().getValue().toString() + ") \n";
 
         String leftValue = new String();
         String rightValue = new String();
@@ -303,7 +310,7 @@ public class LLVMGenerator {
 
     private String cond(ParseTree p, String target){
         String result = new String();
-        result += ";CONDITION " + target + " = " + p.getChild(0).getLabel().getValue().toString() + " " + p.getLabel().getValue().toString() + " " + p.getChild(1).getLabel().getValue().toString() + " \n";
+        result += ";CONDITION (" + target + " = node(" + p.getChild(0).getLabel().getValue().toString() + ") " + p.getLabel().getValue().toString() + " node(" + p.getChild(1).getLabel().getValue().toString() + ")) \n";
 
         String leftValue = new String();
         String rightValue = new String();
@@ -363,6 +370,34 @@ public class LLVMGenerator {
         return result;
     }
 
+    private String print(ParseTree p){
+        String result = new String();
+        String toPrint = "%"+p.getChild(0).getLabel().getValue().toString();
+
+        result += ";PRINT (stdout = "+ toPrint+")\n";
+        result += ";--------------------------------------------\n";
+
+        String printed = generateNewVariableName();
+        result += "\t"+ printed +" = load i32, i32* "+toPrint+"\n";
+
+        result += "\t"+"call void @println(i32 "+ printed+")\n";
+        return result;
+    }
+
+    private String read(ParseTree p){
+        String result = new String();
+        String toStore = "%"+p.getChild(0).getLabel().getValue().toString();
+
+        result += ";READ ("+ toStore+" = stdin)\n";
+        result += ";--------------------------------------------\n";
+
+        String readed = generateNewVariableName();
+        result += "\t"+ toStore +" = alloca i32\n";
+        result += "\t"+ readed +" = call i32 @readInt()\n";
+        result += "\t"+"store i32 "+ readed +", i32* "+toStore+"\n";
+        return result;
+    }
+
     private String generateNewVariableName(){ //MAYBE MODIFY
         String varName = "%v"+generateNewVariableNameCounter;
         generateNewVariableNameCounter ++;
@@ -372,5 +407,43 @@ public class LLVMGenerator {
         }
         variablesName.add(varName);
         return varName;
+    }
+
+    private String generateReadFunction(){
+        String result = new String();
+        result +=
+
+        "@.strR = private unnamed_addr constant [3 x i8] c\"%d\\00\", align 1" + " \n\n" +
+
+        "; Function Attrs: nounwind uwtable" + " \n" +
+            "\tdefine i32 @readInt() #0 {" + " \n" +
+            "\t%x = alloca i32, align 4" + " \n" +
+            "\t%1 = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.strR, i32 0, i32 0), i32* %x)" + " \n" +
+            "\t%2 = load i32, i32* %x, align 4" + " \n" +
+            "\tret i32 %2" + " \n" +
+        "}"+ " \n\n" +
+
+        "declare i32 @__isoc99_scanf(i8*, ...) #1" + " \n";
+        return result;
+    }
+
+    private String generatePrintFunction(){
+        String result = new String();
+        result +=
+
+        "@.strP = private unnamed_addr constant [4 x i8] c\"%d\\0A\\00\", align 1" + " \n\n" +
+
+        "; Function Attrs: nounwind uwtable"+ " \n" +
+        "define void @println(i32 %x) #0 {" + " \n" +
+            "\t%1 = alloca i32, align 4" + " \n" +
+            "\tstore i32 %x, i32* %1, align 4" + " \n" +
+            "\t%2 = load i32, i32* %1, align 4" + " \n" +
+            "\t%3 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.strP, i32 0, i32 0), i32 %2)" + " \n" +
+            "\tret void " + " \n" +
+        "}"+ " \n\n" +
+
+        "declare i32 @printf(i8*, ...) #1" + " \n\n";
+
+        return result;
     }
 }
