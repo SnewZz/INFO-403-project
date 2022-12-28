@@ -122,7 +122,7 @@ public class Parser {
     void parse() throws Exception {
         this.parseTree = program();
         match(LexicalUnit.EOS);
-        System.out.println(getLeftMostDerivation());
+        //System.out.println(getLeftMostDerivation());
     }
 
     /**
@@ -547,6 +547,6 @@ public class Parser {
         ParseTree pt2 = match(LexicalUnit.LPAREN);
         ParseTree pt3 = match(LexicalUnit.VARNAME);
         ParseTree pt4 = match(LexicalUnit.RPAREN);
-        return new ParseTree(new Symbol(LexicalUnit.PRINT_, "<Read>"), Arrays.asList(pt1, pt2, pt3, pt4));
+        return new ParseTree(new Symbol(LexicalUnit.READ_, "<Read>"), Arrays.asList(pt1, pt2, pt3, pt4));
     }
 }

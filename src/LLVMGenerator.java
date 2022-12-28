@@ -42,10 +42,13 @@ public class LLVMGenerator {
                     result += if_(child);
                     break;
                 case WHILE_:
+                    result += "\nTODO WHILE\n";
                     break;
                 case PRINT_:
+                    result += "\nTODO PRINT\n";
                     break;
                 case READ_:
+                    result += "\nTODO READ\n";
                     break;
                 default:
                     break;
@@ -56,7 +59,7 @@ public class LLVMGenerator {
 
     private String assign(ParseTree p){
         String result = new String();
-        result += ";ASSIGN "+p.getChild(0).getLabel().getValue()+" := "+p.getChild(1).getLabel().getValue()+"\n";
+        result += ";ASSIGN "+p.getChild(0).getLabel().getValue()+" := node("+p.getChild(1).getLabel().getValue()+")\n";
         result += ";--------------------------------------------\n";
 
         String varName = "%"+p.getChild(0).getLabel().getValue().toString();
@@ -265,28 +268,32 @@ public class LLVMGenerator {
     private String if_(ParseTree p){
         String result = new String();
         result += ";IF \n";
-        result += "\t"+"if"+ifCounter+":\n";
+        result += ";--------------------------------------------\n";
+        result += "\t"+"br label %if"+ifCounter+"\n";
+        result += "    "+"if"+ifCounter+":\n";
 
         String condResult = generateNewVariableName();
         result += cond(p.getChild(0), condResult);
 
-        result += "\t"+"br i1 "+condResult+", label %if"+ifCounter+"true, label %if"+ifCounter+"false\n";
+        String jmp = (p.getChildren().size() == 3) ? "false" : "end";
 
-        result += "\t"+";THEN \n";
+        result += "\t"+"br i1 "+condResult+", label %if"+ifCounter+"true, label %if"+ifCounter+jmp+"\n";
 
-        result += "\t"+"if"+ifCounter+"true:\n";
+        result += ";THEN \n";
+
+        result += "    "+"if"+ifCounter+"true:\n";
         result += code(p.getChild(1));
         result += "\t"+"br label %if"+ifCounter+"end\n";
 
-        result += "\t"+";ELSE \n";
-        result += "\t"+"if"+ifCounter+"false:\n";
         if(p.getChildren().size() == 3){
+            result += ";ELSE \n";
+            result += "    "+"if"+ifCounter+"false:\n";
             result += code(p.getChild(2));
+            result += "\t"+"br label %if"+ifCounter+"end\n";
         }
-        result += "\t"+"br label %if"+ifCounter+"end\n";
 
         result += ";END \n";
-        result += "\t"+"if"+ifCounter+"end:\n";
+        result += "    "+"if"+ifCounter+"end:\n\n";
 
         ifCounter++;
         return result;

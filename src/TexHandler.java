@@ -16,7 +16,7 @@ public class TexHandler {
             FileWriter myWriter = new FileWriter(fileName);
             myWriter.write(content);
             myWriter.close();
-            System.out.println("The tree has been successfully created in the " + fileName + " file.");
+            //System.out.println("The tree has been successfully created in the " + fileName + " file.");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
