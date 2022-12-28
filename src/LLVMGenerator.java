@@ -6,11 +6,13 @@ public class LLVMGenerator {
     private String result;
     private ArrayList<String> variablesName; 
     private int generateNewVariableNameCounter;
+    private int ifCounter;
 
     public LLVMGenerator(ParseTree pt){
         this.pt = pt;
         this.result = new String();
         this.generateNewVariableNameCounter = 0;
+        this.ifCounter = 0;
         this.variablesName = new ArrayList<String>();
     }
 
@@ -37,6 +39,7 @@ public class LLVMGenerator {
                     result += assign(child);
                     break;
                 case IF_:
+                    result += if_(child);
                     break;
                 case WHILE_:
                     break;
@@ -259,7 +262,72 @@ public class LLVMGenerator {
         return result;
     }
 
+    private String if_(ParseTree p){
+        String result = new String();
+        result += ";IF \n";
+        result += "\t"+"if"+ifCounter+":\n";
 
+        String condResult = generateNewVariableName();
+        result += cond(p.getChild(0), condResult);
+
+        result += "\t"+"br i1 "+condResult+", label %if"+ifCounter+"true, label %if"+ifCounter+"false\n";
+
+        result += "\t"+";THEN \n";
+
+        result += "\t"+"if"+ifCounter+"true:\n";
+        result += code(p.getChild(1));
+        result += "\t"+"br label %if"+ifCounter+"end\n";
+
+        result += "\t"+";ELSE \n";
+        result += "\t"+"if"+ifCounter+"false:\n";
+        if(p.getChildren().size() == 3){
+            result += code(p.getChild(2));
+        }
+        result += "\t"+"br label %if"+ifCounter+"end\n";
+
+        result += ";END \n";
+        result += "\t"+"if"+ifCounter+"end:\n";
+
+        ifCounter++;
+        return result;
+    }
+
+    private String cond(ParseTree p, String target){
+        String result = new String();
+        result += ";CONDITION " + target + " = " + p.getChild(0).getLabel().getValue().toString() + " " + p.getLabel().getValue().toString() + " " + p.getChild(1).getLabel().getValue().toString() + " \n";
+
+        String leftValue = new String();
+        String rightValue = new String();
+        String condResult = generateNewVariableName();
+
+        if(p.getChild(0).getLabel().getType().equals(LexicalUnit.NUMBER)){
+            leftValue = p.getChild(0).getLabel().getValue().toString();
+        }else{
+            leftValue = generateNewVariableName();
+            result += "\t"+leftValue+" = alloca i32\n";
+            result += "\t"+operationHandler(p.getChild(0), leftValue);
+        }
+
+        if(p.getChild(1).getLabel().getType().equals(LexicalUnit.NUMBER)){
+            rightValue = p.getChild(1).getLabel().getValue().toString();
+        }else{
+            rightValue = generateNewVariableName();
+            result += "\t"+rightValue+" = alloca i32\n";
+            result += "\t"+operationHandler(p.getChild(1), rightValue);
+        }
+
+        if(p.getLabel().getType().equals(LexicalUnit.EQUAL)){
+            result += "\t"+condResult+" = icmp eq i32 "+leftValue+", "+rightValue+"\n";
+        }else if(p.getLabel().getType().equals(LexicalUnit.SMALLER)){
+            result += "\t"+condResult+" = icmp slt i32 "+leftValue+", "+rightValue+"\n";
+        }else if(p.getLabel().getType().equals(LexicalUnit.GREATER)){
+            result += "\t"+condResult+" = icmp s/u i32 "+leftValue+", "+rightValue+"\n";
+        }
+
+        
+        result += "\t"+"store i32 "+condResult+", i32* "+target+"\n";
+        return result;
+    }
 
     private String generateNewVariableName(){ //MAYBE MODIFY
         String varName = "%v"+generateNewVariableNameCounter;
