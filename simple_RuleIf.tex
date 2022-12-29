@@ -1,0 +1,14 @@
+\documentclass[border=5pt]{standalone}
+
+\usepackage{tikz}
+\usepackage{forest}
+
+\begin{document}
+
+\begin{forest}for tree={rectangle, draw, l sep=20pt}[{\texttt{<Program>}} [{\texttt{BEGIN}} ][{\texttt{Factorial}} ][{\texttt{<Code>}} [{\texttt{<Assign>}} [{\texttt{a}} ][{\texttt{2}} ]][{\texttt{<Assign>}} [{\texttt{b}} ][{\texttt{1}} ]][{\texttt{<If>}} [{\texttt{>}} [{\texttt{a}} ][{\texttt{b}} ]][{\texttt{<Code>}} ]][{\texttt{<If>}} [{\texttt{>}} [{\texttt{a}} ][{\texttt{b}} ]][{\texttt{<Code>}} [{\texttt{<Print>}} [{\texttt{a}} ]]]][{\texttt{<If>}} [{\texttt{>}} [{\texttt{a}} ][{\texttt{b}} ]][{\texttt{<Code>}} ][{\texttt{<Code>}} ]][{\texttt{<If>}} [{\texttt{<}} [{\texttt{a}} ][{\texttt{b}} ]][{\texttt{<Code>}} [{\texttt{<Print>}} [{\texttt{b}} ]]][{\texttt{<Code>}} [{\texttt{<Print>}} [{\texttt{a}} ]]]][{\texttt{<If>}} [{\texttt{=}} [{\texttt{a}} ][{\texttt{b}} ]][{\texttt{<Code>}} [{\texttt{<Print>}} [{\texttt{a}} ]]][{\texttt{<Code>}} [{\texttt{<Print>}} [{\texttt{b}} ]]]]][{\texttt{END}} ]];
+\end{forest}
+
+\end{document}
+%% Local Variables:
+%% TeX-engine: pdflatex
+%% End:

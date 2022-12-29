@@ -1,5 +1,8 @@
 BEGIN Factorial
 
+a := 1,
+b := 2,
+c := 3,
 WHILE(a > b) DO END,
 WHILE(a = b) DO END,
 WHILE(a < b) DO END,

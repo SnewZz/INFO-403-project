@@ -1,6 +1,6 @@
 BEGIN Factorial
 
-PRINT(a),
 READ(a),
+PRINT(a),
 
 END

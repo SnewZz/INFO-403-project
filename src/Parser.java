@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class Parser {
     private ArrayList<Symbol> tokens;
+    private ArrayList<Symbol> variables;
     private ArrayList<Integer> leftMostDerivationArray;
     private ParseTree parseTree;
 
@@ -17,6 +18,7 @@ public class Parser {
      */
     public Parser(ArrayList<Symbol> tokens) {
         this.tokens = tokens;
+        this.variables = new ArrayList<>();
         this.leftMostDerivationArray = new ArrayList<>();
         this.parseTree = null;
     }
@@ -122,7 +124,7 @@ public class Parser {
     void parse() throws Exception {
         this.parseTree = program();
         match(LexicalUnit.EOS);
-        System.out.println(getLeftMostDerivation());
+        //System.out.println(getLeftMostDerivation());
     }
 
     /**
@@ -223,6 +225,7 @@ public class Parser {
     ParseTree assign() throws Exception {
         leftMostDerivationArray.add(9);
         ParseTree pt1 = match(LexicalUnit.VARNAME);
+        variables.add(pt1.getLabel());
         ParseTree pt2 = match(LexicalUnit.ASSIGN);
         ParseTree pt3 = exprArith();
         return new ParseTree(new Symbol(LexicalUnit.ASSIGN_, "<Assign>"), Arrays.asList(pt1, pt2, pt3));
@@ -280,7 +283,7 @@ public class Parser {
         }
         ParseTree pt2 = mulDiv();
         ParseTree pt3 = exprArithQuote();
-        return new ParseTree(new Symbol(LexicalUnit.EXPRARITHQUOTE_, "ExprArith'"), Arrays.asList(pt1, pt2, pt3));
+        return new ParseTree(new Symbol(LexicalUnit.EXPRARITHQUOTE_, "<ExprArith'>"), Arrays.asList(pt1, pt2, pt3));
     }
 
     /**
@@ -296,7 +299,7 @@ public class Parser {
         leftMostDerivationArray.add(14);
         ParseTree pt1 = atom();
         ParseTree pt2 = mulDivQuote();
-        return new ParseTree(new Symbol(LexicalUnit.MULDIV_, "<MulDiv'>"), Arrays.asList(pt1, pt2));
+        return new ParseTree(new Symbol(LexicalUnit.MULDIV_, "<MulDiv>"), Arrays.asList(pt1, pt2));
     }
 
     /**
@@ -363,6 +366,9 @@ public class Parser {
             case VARNAME:
                 leftMostDerivationArray.add(19);
                 pt1 = match(LexicalUnit.VARNAME);
+                if(!variableExist(pt1.getLabel().getValue().toString())){
+                    throw new Exception("Variable " + pt1.getLabel().getValue().toString() + " is not declared");
+                }
                 break;
             case NUMBER:
                 leftMostDerivationArray.add(20);
@@ -459,7 +465,7 @@ public class Parser {
         ParseTree pt1 = exprArith();
         ParseTree pt2 = comp();
         ParseTree pt3 = exprArith();
-        return new ParseTree(new Symbol(LexicalUnit.IFSEQ_, "<Cond>"), Arrays.asList(pt1, pt2, pt3));
+        return new ParseTree(new Symbol(LexicalUnit.COND_, "<Cond>"), Arrays.asList(pt1, pt2, pt3));
     }
 
     /**
@@ -490,7 +496,7 @@ public class Parser {
                 syntax_error(Arrays.asList(LexicalUnit.EQUAL, LexicalUnit.SMALLER,
                         LexicalUnit.GREATER));
         }
-        return new ParseTree(new Symbol(LexicalUnit.IFSEQ_, "<Comp>"), Arrays.asList(pt1));
+        return new ParseTree(new Symbol(LexicalUnit.COMP_, "<Comp>"), Arrays.asList(pt1));
     }
 
     /**
@@ -529,6 +535,9 @@ public class Parser {
         ParseTree pt1 = match(LexicalUnit.PRINT);
         ParseTree pt2 = match(LexicalUnit.LPAREN);
         ParseTree pt3 = match(LexicalUnit.VARNAME);
+        if(!variableExist(pt3.getLabel().getValue().toString())){
+            throw new Exception("Variable " + pt3.getLabel().getValue().toString() + " is not declared");
+        }
         ParseTree pt4 = match(LexicalUnit.RPAREN);
         return new ParseTree(new Symbol(LexicalUnit.PRINT_, "<Print>"), Arrays.asList(pt1, pt2, pt3, pt4));
     }
@@ -546,7 +555,17 @@ public class Parser {
         ParseTree pt1 = match(LexicalUnit.READ);
         ParseTree pt2 = match(LexicalUnit.LPAREN);
         ParseTree pt3 = match(LexicalUnit.VARNAME);
+        variables.add(pt3.getLabel());
         ParseTree pt4 = match(LexicalUnit.RPAREN);
-        return new ParseTree(new Symbol(LexicalUnit.PRINT_, "<Read>"), Arrays.asList(pt1, pt2, pt3, pt4));
+        return new ParseTree(new Symbol(LexicalUnit.READ_, "<Read>"), Arrays.asList(pt1, pt2, pt3, pt4));
+    }
+
+    boolean variableExist(String varName) {
+        for (int i = 0; i < variables.size(); i++) {
+            if (variables.get(i).getValue().equals(varName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
