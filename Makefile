@@ -6,6 +6,10 @@ all:
 basic:
 	java -jar dist/part3.jar test/Factorial.fs -wt Factorial.tex
 
+checkBasic:
+	java -jar dist/part3.jar test/Factorial.fs -wt Factorial.tex | tee Factorial.ll
+	llvm-as Factorial.ll -o=Factorial.bc
+	lli Factorial.bc
 testing:
 	java -jar dist/part3.jar test/Factorial.fs -wt Factorial.tex
 	java -jar dist/part3.jar test/RuleAssignAndAtom.fs -wt RuleAssignAndAtom.tex
