@@ -7,8 +7,10 @@ import java.io.Reader;
  * the lexer.
  * After the lexer, it calls the parser to ensure that the input data respect
  * the syntax specified by a grammar.
+ * This also calls the tree simplifier to simplify the parse tree created by the parser.
+ * The last step is to generate the corresponding LLVM code, which is printed to the standard output.
  * If specified in the second argument, it creates a latex file containing the
- * parse tree with the name specified in the third argument.
+ * parse tree and the simplified one with the name specified in the third argument.
  */
 public class Main {
     public static void main(String[] args) {

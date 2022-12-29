@@ -2,13 +2,17 @@ import java.util.ArrayList;
 
 public class LLVMGenerator {
 
-    private ParseTree pt;
-    private String result;
-    private ArrayList<String> variablesName; 
-    private int generateNewVariableNameCounter;
-    private int ifCounter;
-    private int whileCounter;
+    private ParseTree pt; //parse tree to generate LLVM code from
+    private String result; //result of the LLVM code generation
+    private ArrayList<String> variablesName; //list of variables names
+    private int generateNewVariableNameCounter; //counter for new variables
+    private int ifCounter; //counter for if statements
+    private int whileCounter; //counter for while statements
 
+    /**
+     * Constructor of the LLVMGenerator class.
+     * @param pt the parse tree to generate LLVM code from
+     */
     public LLVMGenerator(ParseTree pt){
         this.pt = pt;
         this.result = new String();
@@ -18,14 +22,27 @@ public class LLVMGenerator {
         this.variablesName = new ArrayList<String>();
     }
 
+    /**
+     * Getter for the parse tree.
+     * @return the parse tree
+     */
     public ParseTree getParseTree(){
         return this.pt;
     }
 
+    /**
+     * Getter for the result of the LLVM code generation.
+     * @return the result of the LLVM code generation
+     */
     public String getResult(){
         return this.result;
     }
     
+    /**
+     * This method start to generates the corresponding LLVM code recursively.
+     * It first generates the read and print functions.
+     * Then, it generates the main function.
+     */
     public void generateCorrespondingLLVM(){
         this.result += "; This is the code corresponding to the "+this.pt.getChild(1).getLabel().getValue()+" program.\n";
         this.result += ";--------------------------------------------\n";
@@ -41,6 +58,10 @@ public class LLVMGenerator {
         this.result += "}";
     }
 
+    /**
+     * This method generates all the instructions in a code block by calling the corresponding methods.
+     * @return the LLVM code corresponding to the code block
+     */
     private String code(ParseTree p){
         String result = new String();
         for (ParseTree child : p.getChildren()) {
@@ -67,6 +88,12 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to an assignement.
+     * And defines the variable if it does not exist.
+     * Call the operationHandler method to generate the LLVM code corresponding to the operation in the assignement.
+     * @return the LLVM code corresponding to the assignement.
+     */
     private String assign(ParseTree p){
         String result = new String();
         result += ";ASSIGN ("+p.getChild(0).getLabel().getValue()+" := node("+p.getChild(1).getLabel().getValue()+"))\n";
@@ -99,6 +126,12 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method checks the type of the operation and calls the corresponding method.
+     * @param p the parse tree of the operation
+     * @param target the target variable where the result of the operation will be stored.
+     * @return the LLVM code corresponding to the operation.
+     */
     private String operationHandler(ParseTree p, String target){
         String result = new String();
 
@@ -129,6 +162,14 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to a suboperation in a operation.
+     * Call the operationHandler method to generate the LLVM code corresponding to the suboperation if
+     * the suboperation is an operation.
+     * Else it directly returns the value of the suboperation.
+     * @param p the parse tree of the suboperation
+     * @return an array containing the LLVM code corresponding to the suboperation and the variable where the result of the suboperation is stored.
+     */
     private String[] subOperation(ParseTree p){
         String resultText = new String();
         String operation = new String();
@@ -149,6 +190,13 @@ public class LLVMGenerator {
 
     }
 
+    /**
+     * This method generates the LLVM code corresponding to an addition.
+     * Call the subOperation method to generate the LLVM code corresponding to the suboperations.
+     * @param p the parse tree of the addition
+     * @param target the target variable where the result of the addition will be stored.
+     * @return the LLVM code corresponding to the addition.
+     */
     private String add(ParseTree p, String target){
         String result = new String();
         result += ";ADDITION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " + " + p.getChild(1).getLabel().getValue().toString() + ") \n";
@@ -168,6 +216,13 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to a substraction.
+     * Call the subOperation method to generate the LLVM code corresponding to the suboperations.
+     * @param p the parse tree of the substraction
+     * @param target the target variable where the result of the substraction will be stored.
+     * @return the LLVM code corresponding to the substraction.
+     */
     private String minus(ParseTree p, String target){
         String result = new String();
         result += ";SUBSTRACTION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " - " + p.getChild(1).getLabel().getValue().toString() + ") \n";
@@ -187,6 +242,13 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to a unary minus.
+     * Call the subOperation method to generate the LLVM code corresponding to the suboperation.
+     * @param p the parse tree of the unary minus
+     * @param target the target variable where the result of the unary minus will be stored.
+     * @return the LLVM code corresponding to the unary minus.
+     */
     private String minusUnary(ParseTree p, String target){
         String result = new String();
         result += ";UNARY SUBSTRACTION (" + target + " = -" + p.getChild(0).getLabel().getValue().toString() + ") \n";
@@ -201,6 +263,13 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to a division.
+     * Call the subOperation method to generate the LLVM code corresponding to the suboperations.
+     * @param p the parse tree of the division
+     * @param target the target variable where the result of the division will be stored.
+     * @return the LLVM code corresponding to the division.
+     */
     private String divide(ParseTree p, String target){
         String result = new String();
         result += ";DIVISION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " / " + p.getChild(1).getLabel().getValue().toString() + ") \n";
@@ -220,6 +289,13 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to a multiplication.
+     * Call the subOperation method to generate the LLVM code corresponding to the suboperations.
+     * @param p the parse tree of the multiplication
+     * @param target the target variable where the result of the multiplication will be stored.
+     * @return the LLVM code corresponding to the multiplication.
+     */
     private String times(ParseTree p, String target){
         String result = new String();
         result += ";MULTIPLICATION (" + target + " = " + p.getChild(0).getLabel().getValue().toString() + " * " + p.getChild(1).getLabel().getValue().toString() + ") \n";
@@ -239,6 +315,14 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to a if.
+     * Call the cond method to generate the LLVM code corresponding to the condition.
+     * Then setup the labels and the jumps.
+     * And call the code method to generate the LLVM code corresponding to the code sections of the if
+     * @param p the parse tree of the if
+     * @return the LLVM code corresponding to the if.
+     */
     private String if_(ParseTree p){
         String result = new String();
         result += ";IF \n";
@@ -273,6 +357,13 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to a condition.
+     * Call the subOperation method to generate the LLVM code corresponding to the suboperations of the condition.
+     * @param p the parse tree of the condition
+     * @param target the target variable where the result of the condition will be stored.
+     * @return the LLVM code corresponding to the condition.
+     */
     private String cond(ParseTree p, String target){
         String result = new String();
         result += ";CONDITION (" + target + " = node(" + p.getChild(0).getLabel().getValue().toString() + ") " + p.getLabel().getValue().toString() + " node(" + p.getChild(1).getLabel().getValue().toString() + ")) \n";
@@ -299,6 +390,14 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to a while.
+     * Call the cond method to generate the LLVM code corresponding to the condition.
+     * Then setup the labels and the jumps.
+     * And call the code method to generate the LLVM code corresponding to the code section of the while
+     * @param p the parse tree of the while
+     * @return the LLVM code corresponding to the while.
+     */
     private String while_(ParseTree p){
         String result = new String();
         result += ";WHILE \n";
@@ -324,6 +423,11 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to the call of the print function.
+     * @param p the parse tree of the print function
+     * @return the LLVM code corresponding to the print function.
+     */
     private String print(ParseTree p){
         String result = new String();
         String toPrint = "%"+p.getChild(0).getLabel().getValue().toString();
@@ -338,6 +442,11 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to the call of the read function.
+     * @param p the parse tree of the read function
+     * @return the LLVM code corresponding to the read function.
+     */
     private String read(ParseTree p){
         String result = new String();
         String toStore = "%"+p.getChild(0).getLabel().getValue().toString();
@@ -357,6 +466,10 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generate new variable name.
+     * @return the new variable name.
+     */
     private String generateNewVariableName(){ //MAYBE MODIFY
         String varName = "%v"+generateNewVariableNameCounter;
         generateNewVariableNameCounter ++;
@@ -368,6 +481,10 @@ public class LLVMGenerator {
         return varName;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to the read function.
+     * @return the LLVM code corresponding to the read function.
+     */
     private String generateReadFunction(){
         String result = new String();
         result +=
@@ -386,6 +503,10 @@ public class LLVMGenerator {
         return result;
     }
 
+    /**
+     * This method generates the LLVM code corresponding to the print function.
+     * @return the LLVM code corresponding to the print function.
+     */
     private String generatePrintFunction(){
         String result = new String();
         result +=
